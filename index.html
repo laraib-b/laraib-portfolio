@@ -479,10 +479,52 @@
 
     <div class="cards" style="margin-top:22px;">
 
+      <!-- AI Email Sorter (n8n) -->
+      <article class="card" data-key="nsort" data-domains="workflow ml api">
+        <div class="card-top">
+          <span class="card-num">01</span>
+        </div>
+        <h3 class="title">AI Email Sorter</h3>
+        <div class="field">
+          <p class="field-label">Problem</p>
+          <p class="field-text">Important emails get buried in a busy Gmail inbox, and manually sorting them and sharing the right ones with the right people is slow and easy to forget.</p>
+        </div>
+        <div class="field">
+          <p class="field-label">Built</p>
+          <p class="field-text">An n8n automation that reads incoming Gmail messages, classifies each one by topic with an OpenAI chat model, and forwards it to the matching Discord channel within a single server &mdash; fully hands-off.</p>
+        </div>
+        <div class="field">
+          <p class="field-label">Architecture</p>
+          <div class="flow">
+            <span class="flow-step">Gmail (new email)</span><span class="flow-arrow">&#8595;</span>
+            <span class="flow-step">n8n workflow</span><span class="flow-arrow">&#8595;</span>
+            <span class="flow-step">OpenAI text classifier</span><span class="flow-arrow">&#8595;</span>
+            <span class="flow-step">Category routing</span><span class="flow-arrow">&#8595;</span>
+            <span class="flow-step">Discord channels</span>
+          </div>
+        </div>
+        <div class="field">
+          <p class="field-label">Skills demonstrated</p>
+          <div class="tags">
+            <span class="tag">AI</span><span class="tag">Automation</span><span class="tag">Workflow</span><span class="tag">APIs</span>
+          </div>
+        </div>
+        <div class="field">
+          <p class="field-label">Technologies</p>
+          <div class="stack">
+            <span class="stack-tag">n8n</span><span class="stack-tag">OpenAI API</span><span class="stack-tag">Gmail API</span><span class="stack-tag">Discord API</span>
+          </div>
+        </div>
+        <div class="card-foot">
+          <!-- TODO: add n8n workflow screenshot (and optional repo link with exported JSON) -->
+          <span class="img-slot">Workflow image</span>
+        </div>
+      </article>
+
       <!-- Hamara Kisaan -->
       <article class="card" data-key="hk" data-domains="ml cv data frontend backend database api">
         <div class="card-top">
-          <span class="card-num">01</span>
+          <span class="card-num">02</span>
         </div>
         <h3 class="title">Hamara Kisaan</h3>
         <div class="field">
@@ -526,7 +568,7 @@
       <!-- Self-Driving Car -->
       <article class="card" data-key="sd" data-domains="robotics embedded sensors cv ml scripting">
         <div class="card-top">
-          <span class="card-num">02</span>
+          <span class="card-num">03</span>
         </div>
         <h3 class="title">Self-Driving Traffic-Aware Car</h3>
         <div class="field">
@@ -568,7 +610,7 @@
       <!-- RideFlow -->
       <article class="card" data-key="rf" data-domains="backend database api">
         <div class="card-top">
-          <span class="card-num">03</span>
+          <span class="card-num">04</span>
         </div>
         <h3 class="title">RideFlow</h3>
         <div class="field">
@@ -610,7 +652,7 @@
       <!-- InstaHealth -->
       <article class="card" data-key="ih" data-domains="data backend database">
         <div class="card-top">
-          <span class="card-num">04</span>
+          <span class="card-num">05</span>
         </div>
         <h3 class="title">InstaHealth Dashboard</h3>
         <div class="field">
@@ -651,7 +693,7 @@
       <!-- Bulk Downloader -->
       <article class="card" data-key="bd" data-domains="extension scripting workflow frontend">
         <div class="card-top">
-          <span class="card-num">05</span>
+          <span class="card-num">06</span>
         </div>
         <h3 class="title">Classroom Bulk Downloader</h3>
         <div class="field">
@@ -693,7 +735,7 @@
       <!-- FAST Cafe -->
       <article class="card" data-key="fc" data-domains="frontend">
         <div class="card-top">
-          <span class="card-num">06</span>
+          <span class="card-num">07</span>
         </div>
         <h3 class="title">FAST Caf&eacute; Website</h3>
         <div class="field">
@@ -794,6 +836,7 @@
         ih: { x: 165, y: 405, label: 'InstaHealth', type: 'project', domains: 'data backend database' },
         bd: { x: 805, y: 335, label: 'Bulk Downloader', type: 'project', domains: 'extension scripting workflow frontend' },
         fc: { x: 640, y: 480, label: 'FAST Cafe', type: 'project', domains: 'frontend' },
+        nsort: { x: 300, y: 540, label: 'AI Email Sorter', type: 'project', domains: 'workflow ml api' },
         // skills
         tensorflow: { x: 215, y: 95, label: 'TensorFlow', type: 'skill', domains: 'ml' },
         cvision:    { x: 470, y: 95, label: 'Computer Vision', type: 'skill', domains: 'cv' },
@@ -805,7 +848,11 @@
         chromeapi:  { x: 915, y: 300, label: 'Chrome API', type: 'skill', domains: 'extension' },
         python:     { x: 560, y: 185, label: 'Python', type: 'skill', domains: 'scripting' },
         esp32:      { x: 880, y: 120, label: 'ESP32', type: 'skill', domains: 'embedded' },
-        mqtt:       { x: 855, y: 215, label: 'MQTT', type: 'skill', domains: 'sensors' }
+        mqtt:       { x: 855, y: 215, label: 'MQTT', type: 'skill', domains: 'sensors' },
+        n8n:        { x: 135, y: 500, label: 'n8n', type: 'skill', domains: 'workflow' },
+        openai:     { x: 455, y: 555, label: 'OpenAI', type: 'skill', domains: 'ml' },
+        gmail:      { x: 205, y: 568, label: 'Gmail API', type: 'skill', domains: 'api' },
+        discord:    { x: 565, y: 525, label: 'Discord API', type: 'skill', domains: 'api' }
       };
       var LINKS = [
         ['hk', 'tensorflow'], ['hk', 'cvision'], ['hk', 'react'], ['hk', 'flask'], ['hk', 'mysql'],
@@ -813,7 +860,8 @@
         ['rf', 'nodejs'], ['rf', 'mysql'],
         ['fc', 'javascript'],
         ['bd', 'javascript'], ['bd', 'chromeapi'],
-        ['sd', 'python'], ['sd', 'esp32'], ['sd', 'mqtt'], ['sd', 'cvision']
+        ['sd', 'python'], ['sd', 'esp32'], ['sd', 'mqtt'], ['sd', 'cvision'],
+        ['nsort', 'n8n'], ['nsort', 'openai'], ['nsort', 'gmail'], ['nsort', 'discord']
       ];
 
       var SVGNS = 'http://www.w3.org/2000/svg';
