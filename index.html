@@ -274,6 +274,23 @@
     .card-foot { display: flex; gap: 8px; align-items: center; margin-top: 16px; padding-top: 14px; border-top: 0.5px solid var(--border); flex-wrap: wrap; }
     .link-chip { font-size: var(--fs-tag); letter-spacing: 0.5px; text-transform: uppercase; border: 0.5px solid var(--chip-border); border-radius: 16px; padding: 4px 9px; color: #5a5754; }
     .link-chip.todo { border-style: dashed; color: var(--text-soft); }
+    /* Filled, high-visibility GitHub link */
+    a.link-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #fff;
+      background: var(--accent);
+      border-color: var(--accent);
+      font-weight: 500;
+      transition: background 0.18s, box-shadow 0.18s, transform 0.12s;
+    }
+    a.link-chip:hover {
+      background: var(--accent-soft);
+      box-shadow: 0 2px 10px rgba(181, 101, 118, 0.4);
+      transform: translateY(-1px);
+    }
+    .gh-ico { width: 13px; height: 13px; fill: currentColor; flex-shrink: 0; }
     .img-slot { font-size: var(--fs-tag); letter-spacing: 0.5px; text-transform: uppercase; border: 0.5px dashed var(--chip-border); border-radius: 4px; padding: 6px 10px; color: var(--text-soft); }
 
     /* ---- About + Contact ---- */
@@ -449,7 +466,7 @@
         </div>
         <div class="card-foot">
           <!-- TODO: add Hamara Kisaan screenshot -->
-          <a class="link-chip" href="https://github.com/laraib-b/Hamara-Kisaan" target="_blank" rel="noopener noreferrer">GitHub &#8599;</a>
+          <a class="link-chip" href="https://github.com/laraib-b/Hamara-Kisaan" target="_blank" rel="noopener noreferrer"><svg class="gh-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
           <span class="link-chip todo">In progress &middot; ~50%</span>
           <span class="img-slot">Image slot</span>
         </div>
@@ -533,7 +550,7 @@
         </div>
         <div class="card-foot">
           <!-- TODO: add RideFlow screenshot -->
-          <a class="link-chip" href="https://github.com/laraib-b/RideFlow" target="_blank" rel="noopener noreferrer">GitHub &#8599;</a>
+          <a class="link-chip" href="https://github.com/laraib-b/RideFlow" target="_blank" rel="noopener noreferrer"><svg class="gh-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
           <span class="img-slot">Image slot</span>
         </div>
       </article>
@@ -616,7 +633,7 @@
         </div>
         <div class="card-foot">
           <!-- TODO: add Bulk Downloader screenshot -->
-          <a class="link-chip" href="https://github.com/laraib-b/Bulk-File-Downloader-for-Google-Classroom" target="_blank" rel="noopener noreferrer">GitHub &#8599;</a>
+          <a class="link-chip" href="https://github.com/laraib-b/Bulk-File-Downloader-for-Google-Classroom" target="_blank" rel="noopener noreferrer"><svg class="gh-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
           <span class="img-slot">Image slot</span>
         </div>
       </article>
@@ -657,7 +674,7 @@
         </div>
         <div class="card-foot">
           <!-- TODO: add FAST Cafe screenshot -->
-          <a class="link-chip" href="https://github.com/laraib-b/Campus-Cafe-Website" target="_blank" rel="noopener noreferrer">GitHub &#8599;</a>
+          <a class="link-chip" href="https://github.com/laraib-b/Campus-Cafe-Website" target="_blank" rel="noopener noreferrer"><svg class="gh-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
           <span class="img-slot">Image slot</span>
         </div>
       </article>
