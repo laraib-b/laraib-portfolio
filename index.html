@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laraib Butt | Intelligent Systems</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap');
+
+    :root {
+      /* Palette */
+      --bg: #f8f6f1;
+      --surface: #f8f6f1;
+      --hover-bg: #f2efe8;
+      --text-main: #1a1916;
+      --text-muted: #7a7672;
+      --text-soft: #a09c96;
+      --border: #d9d6ce;
+      --chip-border: #c9c6be;
+      --node-fill: #eeeae2;
+      --accent: #b56576;        /* dusty rose */
+      --accent-soft: #c68493;
+      --accent-tint: #efdfe2;
+
+      /* One strict type scale */
+      --fs-display: 40px;
+      --fs-h2: 24px;
+      --fs-h3: 18px;
+      --fs-eyebrow: 10px;
+      --fs-body: 13px;
+      --fs-meta: 11px;
+      --fs-tag: 10px;
+
+      --serif: 'DM Serif Display', serif;
+      --sans: 'DM Sans', sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text-main);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ---- Shared type primitives (consistent everywhere) ---- */
+    .eyebrow {
+      font-size: var(--fs-eyebrow);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      margin: 0 0 16px;
+      font-weight: 400;
+    }
+    .title {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-style: normal;
+      line-height: 1.15;
+      color: var(--text-main);
+      margin: 0;
+    }
+    h1.title { font-size: var(--fs-display); }
+    h2.title { font-size: var(--fs-h2); }
+    h3.title { font-size: var(--fs-h3); }
+    /* The ONE intentional italic-accent use */
+    .accent-word { font-style: italic; color: var(--accent); }
+
+    .section { padding: 44px 36px; border-top: 0.5px solid var(--border); }
+
+    /* ---- Nav ---- */
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 36px;
+      border-bottom: 0.5px solid var(--border);
+    }
+    .nav-name { font-family: var(--serif); font-size: 16px; }
+    .nav-links { display: flex; gap: 24px; font-size: var(--fs-meta); color: #888580; letter-spacing: 0.5px; }
+    .nav-links a:hover { color: var(--text-main); }
+    .nav-links .accent-link { color: var(--accent); }
+
+    /* ---- Hero ---- */
+    .hero { padding: 64px 36px 52px; }
+    .hero-inner { max-width: 760px; }
+    .hero h1 { margin: 0 0 20px; }
+    .hero p {
+      font-size: var(--fs-body);
+      color: var(--text-muted);
+      line-height: 1.75;
+      margin: 0 0 26px;
+      max-width: 560px;
+    }
+    .hero-meta { display: flex; gap: 22px; flex-wrap: wrap; font-size: var(--fs-meta); color: var(--text-soft); }
+    .hero-meta span strong { color: var(--text-main); font-weight: 500; }
+
+    /* ---- Capability map / filters ---- */
+    .capmap-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 0.5px solid var(--border);
+      margin-top: 4px;
+    }
+    .cluster { background: var(--surface); padding: 20px 18px 22px; }
+    .cluster-head {
+      font-family: var(--serif);
+      font-size: 15px;
+      margin: 0 0 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      line-height: 1.2;
+    }
+    .cluster-head .glyph { font-size: 14px; }
+    .cluster-head:hover { color: var(--accent); }
+    .chip-list { display: flex; flex-direction: column; gap: 7px; align-items: flex-start; }
+    .chip {
+      font-size: var(--fs-meta);
+      color: #5a5754;
+      border: 0.5px solid var(--chip-border);
+      background: transparent;
+      border-radius: 18px;
+      padding: 4px 11px;
+      cursor: pointer;
+      font-family: var(--sans);
+      transition: background 0.18s, color 0.18s, border-color 0.18s;
+    }
+    .chip:hover { border-color: var(--accent-soft); color: var(--accent); }
+    .chip.active, .cluster-head.active {
+      color: #fff;
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+    .cluster-head.active { color: var(--accent); background: transparent; }
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 18px;
+      flex-wrap: wrap;
+      font-size: var(--fs-meta);
+      color: var(--text-soft);
+    }
+    .reset-chip {
+      font-size: var(--fs-meta);
+      border: 0.5px solid var(--chip-border);
+      border-radius: 18px;
+      padding: 4px 12px;
+      cursor: pointer;
+      background: transparent;
+      font-family: var(--sans);
+      color: #5a5754;
+    }
+    .reset-chip:hover { border-color: var(--accent-soft); color: var(--accent); }
+    #filter-status strong { color: var(--accent); font-weight: 500; }
+
+    /* ---- Constellation ---- */
+    .constellation-wrap {
+      margin-top: 6px;
+      border: 0.5px solid var(--border);
+      background:
+        radial-gradient(circle at 30% 25%, rgba(181,101,118,0.05), transparent 60%),
+        var(--surface);
+      overflow: hidden;
+    }
+    .constellation { display: block; width: 100%; height: auto; }
+
+    .c-link {
+      stroke: #ccc7bd;
+      stroke-width: 1;
+      transition: stroke 0.25s, stroke-width 0.25s, opacity 0.25s;
+    }
+    .c-node .dot {
+      transition: opacity 0.25s, fill 0.25s, r 0.2s;
+    }
+    .c-node .ring {
+      fill: none; stroke: var(--accent); stroke-width: 1.2;
+      opacity: 0; transition: opacity 0.25s;
+    }
+    .c-node text {
+      font-family: var(--sans);
+      fill: var(--text-muted);
+      transition: fill 0.25s, opacity 0.25s;
+    }
+    .c-node.project .dot { fill: var(--accent); }
+    .c-node.project text { fill: var(--text-main); font-size: 13px; }
+    .c-node.skill .dot { fill: #bdb8b0; }
+    .c-node.skill text { font-size: 11px; }
+    .c-node { cursor: pointer; }
+
+    /* hover glow */
+    .c-link.glow { stroke: var(--accent); stroke-width: 1.8; filter: drop-shadow(0 0 4px rgba(181,101,118,0.55)); }
+    .c-node.glow .dot { filter: drop-shadow(0 0 6px rgba(181,101,118,0.65)); }
+    .c-node.glow.skill .dot { fill: var(--accent-soft); }
+    .c-node.glow text { fill: var(--accent); }
+    .c-node.glow .ring { opacity: 1; }
+
+    /* filter dim/highlight */
+    .c-link.dim { opacity: 0.08; }
+    .c-node.dim .dot { opacity: 0.16; }
+    .c-node.dim text { opacity: 0.18; }
+    .c-node.match .ring { opacity: 1; }
+
+    .legend {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+      font-size: var(--fs-meta);
+      color: var(--text-soft);
+    }
+    .legend .swatch { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+    .legend .sw-project { background: var(--accent); }
+    .legend .sw-skill { background: #bdb8b0; }
+
+    /* ---- Project case-study cards ---- */
+    .cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: var(--border); border: 0.5px solid var(--border); margin-top: 6px; }
+    .card {
+      background: var(--surface);
+      padding: 28px 26px 24px;
+      transition: background 0.2s, opacity 0.25s;
+      display: flex;
+      flex-direction: column;
+    }
+    .card:hover { background: var(--hover-bg); }
+    .card.dim { opacity: 0.32; }
+    .card.focus { animation: card-focus 1.6s ease; }
+    @keyframes card-focus {
+      0% { box-shadow: inset 0 0 0 0 var(--accent); background: var(--accent-tint); }
+      30% { box-shadow: inset 0 0 0 2px var(--accent); background: var(--accent-tint); }
+      100% { box-shadow: inset 0 0 0 0 transparent; background: var(--surface); }
+    }
+    .card-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 10px; }
+    .card-num { font-family: var(--serif); font-style: italic; font-size: var(--fs-meta); color: #c0bbb4; }
+    .card h3 { margin: 0 0 16px; }
+
+    .field { margin-bottom: 14px; }
+    .field-label { font-size: var(--fs-eyebrow); letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-soft); margin: 0 0 5px; }
+    .field-text { font-size: var(--fs-body); color: var(--text-muted); line-height: 1.6; margin: 0; }
+
+    .flow { display: flex; flex-direction: column; gap: 5px; align-items: flex-start; }
+    .flow-step {
+      font-size: var(--fs-meta);
+      color: #5a5754;
+      border: 0.5px solid var(--chip-border);
+      border-radius: 4px;
+      padding: 4px 10px;
+      background: var(--node-fill);
+    }
+    .flow-arrow { color: var(--accent-soft); font-size: var(--fs-meta); line-height: 1; padding-left: 12px; }
+
+    .tags { display: flex; gap: 5px; flex-wrap: wrap; margin: 4px 0 14px; }
+    .tag {
+      font-size: var(--fs-tag);
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 0.5px solid var(--accent-soft);
+      border-radius: 3px;
+      padding: 2px 7px;
+      background: var(--accent-tint);
+    }
+    .stack { display: flex; gap: 5px; flex-wrap: wrap; }
+    .stack-tag { font-size: var(--fs-tag); color: #9a9690; border: 0.5px solid var(--chip-border); border-radius: 3px; padding: 2px 7px; }
+
+    .card-foot { display: flex; gap: 8px; align-items: center; margin-top: 16px; padding-top: 14px; border-top: 0.5px solid var(--border); flex-wrap: wrap; }
+    .link-chip { font-size: var(--fs-tag); letter-spacing: 0.5px; text-transform: uppercase; border: 0.5px solid var(--chip-border); border-radius: 16px; padding: 4px 9px; color: #5a5754; }
+    .link-chip.todo { border-style: dashed; color: var(--text-soft); }
+    .img-slot { font-size: var(--fs-tag); letter-spacing: 0.5px; text-transform: uppercase; border: 0.5px dashed var(--chip-border); border-radius: 4px; padding: 6px 10px; color: var(--text-soft); }
+
+    /* ---- About + Contact ---- */
+    .about-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 40px; align-items: start; }
+    .about-text { font-size: var(--fs-body); color: #5a5754; line-height: 1.85; margin: 0; }
+    .about-text strong { color: var(--text-main); font-weight: 500; }
+
+    .contact-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-top: 6px; }
+    .contact-item { border: 0.5px solid var(--border); padding: 14px 14px 12px; }
+    .contact-item .field-label { margin-bottom: 6px; }
+    .contact-value { margin: 0; font-size: var(--fs-body); color: #4a4845; word-break: break-word; }
+    .contact-value a:hover { color: var(--accent); }
+
+    .footer-note { margin-top: 26px; font-size: var(--fs-meta); color: var(--text-soft); }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 880px) {
+      .nav { flex-direction: column; align-items: flex-start; gap: 12px; }
+      .nav-links { flex-wrap: wrap; gap: 14px; }
+      .capmap-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .cards { grid-template-columns: 1fr; }
+      .about-grid { grid-template-columns: 1fr; gap: 18px; }
+      .contact-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .section, .hero, .nav { padding-left: 20px; padding-right: 20px; }
+      :root { --fs-display: 32px; }
+    }
+    @media (max-width: 520px) {
+      .capmap-grid { grid-template-columns: 1fr; }
+      .contact-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-name">Laraib Butt</div>
+    <div class="nav-links">
+      <a href="#map">Map</a>
+      <a href="#projects">Projects</a>
+      <a href="#about">About</a>
+      <a class="accent-link" href="https://github.com/laraib-b" target="_blank" rel="noopener noreferrer">GitHub &#8599;</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-inner">
+      <p class="eyebrow">Data Science &middot; Engineering &middot; Hardware</p>
+      <h1 class="title">I build intelligent systems across<br>software, hardware, and <span class="accent-word">data</span>.</h1>
+      <p>
+        My work does not fit in one box. I combine machine learning, full stack engineering,
+        automation, and physical computing to build complete systems that solve real problems.
+      </p>
+      <div class="hero-meta">
+        <span>Based in Rawalpindi / Islamabad, Pakistan</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- CAPABILITY MAP (FILTERS) -->
+  <section class="section" id="map">
+    <p class="eyebrow">Skill Map</p>
+    <h2 class="title">Choose a <span class="accent-word">skill</span>, see its projects below.</h2>
+    <p class="field-text" style="max-width:560px;margin:12px 0 22px;">
+      My work spans four domains that overlap constantly. Choose any one to highlight every project that
+      draws on it across the map below.
+    </p>
+
+    <div class="capmap-grid">
+      <div class="cluster">
+        <h3 class="cluster-head" data-domain="ml cv data"><span class="glyph">&#129504;</span> Intelligent Systems</h3>
+        <div class="chip-list">
+          <button class="chip" data-domain="ml">Machine Learning</button>
+          <button class="chip" data-domain="cv">Computer Vision</button>
+          <button class="chip" data-domain="data">Data Science</button>
+        </div>
+      </div>
+      <div class="cluster">
+        <h3 class="cluster-head" data-domain="frontend backend database api"><span class="glyph">&#9881;</span> Product Engineering</h3>
+        <div class="chip-list">
+          <button class="chip" data-domain="frontend">Frontend</button>
+          <button class="chip" data-domain="backend">Backend</button>
+          <button class="chip" data-domain="database">Databases</button>
+          <button class="chip" data-domain="api">APIs</button>
+        </div>
+      </div>
+      <div class="cluster">
+        <h3 class="cluster-head" data-domain="robotics sensors embedded"><span class="glyph">&#129302;</span> Physical Computing</h3>
+        <div class="chip-list">
+          <button class="chip" data-domain="robotics">Robotics</button>
+          <button class="chip" data-domain="sensors">Sensors</button>
+          <button class="chip" data-domain="embedded">Embedded Systems</button>
+        </div>
+      </div>
+      <div class="cluster">
+        <h3 class="cluster-head" data-domain="workflow extension scripting"><span class="glyph">&#128257;</span> Automation</h3>
+        <div class="chip-list">
+          <button class="chip" data-domain="workflow">Workflow Automation</button>
+          <button class="chip" data-domain="extension">Browser Extensions</button>
+          <button class="chip" data-domain="scripting">Scripting</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="filter-bar">
+      <button class="reset-chip" id="reset-filter">All projects</button>
+      <span id="filter-status">Showing all projects &middot; hover a node to trace its connections</span>
+    </div>
+  </section>
+
+  <!-- CONSTELLATION -->
+  <section class="section" id="ecosystem">
+    <p class="eyebrow">Project Ecosystem</p>
+    <h2 class="title">Projects are the <span class="accent-word">nodes</span>. Skills are the connections.</h2>
+    <p class="field-text" style="max-width:560px;margin:12px 0 20px;">
+      Hover any project to trace the technologies it shares with others. Shared skills are what tie
+      the whole system together.
+    </p>
+
+    <div class="constellation-wrap">
+      <svg class="constellation" viewBox="0 0 1000 600" role="img" aria-label="Network map of projects connected to the skills they share">
+        <g id="links"></g>
+        <g id="nodes"></g>
+      </svg>
+    </div>
+    <div class="legend">
+      <span><span class="swatch sw-project"></span>Project</span>
+      <span><span class="swatch sw-skill"></span>Skill / Technology</span>
+    </div>
+  </section>
+
+  <!-- CASE STUDIES -->
+  <section class="section" id="projects">
+    <p class="eyebrow">Project Descriptions</p>
+    <h2 class="title">Each project is a <span class="accent-word">complete system</span>.</h2>
+
+    <div class="cards" style="margin-top:22px;">
+
+      <!-- Hamara Kisaan -->
+      <article class="card" data-key="hk" data-domains="ml cv data frontend backend database api">
+        <div class="card-top">
+          <span class="card-num">01</span>
+        </div>
+        <h3 class="title">Hamara Kisaan</h3>
+        <div class="field">
+          <p class="field-label">Problem</p>
+          <p class="field-text">Urdu-speaking farmers lack accessible tools to catch crop diseases early or get timely, localized advisories.</p>
+        </div>
+        <div class="field">
+          <p class="field-label">Built</p>
+          <p class="field-text">A full stack, Urdu-first agriculture platform with image-based crop disease detection, live weather data, and an advisory dashboard.</p>
+        </div>
+        <div class="field">
+          <p class="field-label">Architecture</p>
+          <div class="flow">
+            <span class="flow-step">User</span><span class="flow-arrow">&#8595;</span>
+            <span class="flow-step">React frontend</span><span class="flow-arrow">&#8595;</span>
+            <span class="flow-step">Flask API</span><span class="flow-arrow">&#8595;</span>
+            <span class="flow-step">TensorFlow model</span><span class="flow-arrow">&#8595;</span>
+            <span class="flow-step">Disease prediction + advisory</span>
+          </div>
+        </div>
+        <div class="field">
+          <p class="field-label">Skills demonstrated</p>
+          <div class="tags">
+            <span class="tag">AI/ML</span><span class="tag">Computer Vision</span><span class="tag">Full Stack</span><span class="tag">Data</span>
+          </div>
+        </div>
+        <div class="field">
+          <p class="field-label">Technologies</p>
+          <div class="stack">
+            <span class="stack-tag">React</span><span class="stack-tag">Flask</span><span class="stack-tag">MySQL</span><span class="stack-tag">TensorFlow</span><span class="stack-tag">Weather APIs</span>
+          </div>
+        </div>
+        <div class="card-foot">
+          <!-- TODO: add Hamara Kisaan GitHub link + screenshot -->
+          <a class="link-chip todo" href="#">GitHub link pending</a>
+          <span class="img-slot">Image slot</span>
+        </div>
+      </article>
+
+      <!-- Self-Driving Car -->
+      <article class="card" data-key="sd" data-domains="robotics embedded sensors cv ml scripting">
+        <div class="card-top">
+          <span class="card-num">02</span>
+        </div>
+        <h3 class="title">Self-Driving Traffic-Aware Car</h3>
+        <div class="field">
+          <p class="field-label">Requirement</p>
+          <p class="field-text">A low-cost vehicle needs to navigate autonomously while reacting to obstacles and traffic lights.</p>
+        </div>
+        <div class="field">
+          <p class="field-label">Built</p>
+          <p class="field-text">An autonomous RC car with autopilot, obstacle avoidance, and traffic light detection using computer vision and sensor fusion.</p>
+        </div>
+        <div class="field">
+          <p class="field-label">Architecture</p>
+          <div class="flow">
+            <span class="flow-step">ESPCam + ultrasonic sensors</span><span class="flow-arrow">&#8595;</span>
+            <span class="flow-step">MQTT stream</span><span class="flow-arrow">&#8595;</span>
+            <span class="flow-step">Vision + control logic</span><span class="flow-arrow">&#8595;</span>
+            <span class="flow-step">Motor actuation</span>
+          </div>
+        </div>
+        <div class="field">
+          <p class="field-label">Skills demonstrated</p>
+          <div class="tags">
+            <span class="tag">Robotics</span><span class="tag">Embedded</span><span class="tag">Sensors</span><span class="tag">Computer Vision</span>
+          </div>
+        </div>
+        <div class="field">
+          <p class="field-label">Technologies</p>
+          <div class="stack">
+            <span class="stack-tag">Python</span><span class="stack-tag">Arduino C</span><span class="stack-tag">ESP32</span><span class="stack-tag">ESPCam</span><span class="stack-tag">MQTT</span>
+          </div>
+        </div>
+        <div class="card-foot">
+          <!-- TODO: add Self-Driving Car GitHub link + screenshot -->
+          <a class="link-chip todo" href="#">GitHub link pending</a>
+          <span class="img-slot">Image slot</span>
+        </div>
+      </article>
+
+      <!-- RideFlow -->
+      <article class="card" data-key="rf" data-domains="backend database api">
+        <div class="card-top">
+          <span class="card-num">03</span>
+        </div>
+        <h3 class="title">RideFlow</h3>
+        <div class="field">
+          <p class="field-label">Requirement</p>
+          <p class="field-text">Ride-hailing needs reliable fare logic, driver matching, payments, and strict role-based control.</p>
+        </div>
+        <div class="field">
+          <p class="field-label">Built</p>
+          <p class="field-text">REST APIs for fare calculation, driver matching, payments, and admin reporting, backed by stored procedures, triggers, views, and RBAC.</p>
+        </div>
+        <div class="field">
+          <p class="field-label">Architecture</p>
+          <div class="flow">
+            <span class="flow-step">Client</span><span class="flow-arrow">&#8595;</span>
+            <span class="flow-step">Node / Express REST API</span><span class="flow-arrow">&#8595;</span>
+            <span class="flow-step">MySQL (procedures, triggers, views)</span><span class="flow-arrow">&#8595;</span>
+            <span class="flow-step">Role-based response</span>
+          </div>
+        </div>
+        <div class="field">
+          <p class="field-label">Skills demonstrated</p>
+          <div class="tags">
+            <span class="tag">Backend</span><span class="tag">Databases</span><span class="tag">APIs</span>
+          </div>
+        </div>
+        <div class="field">
+          <p class="field-label">Technologies</p>
+          <div class="stack">
+            <span class="stack-tag">Node.js</span><span class="stack-tag">Express</span><span class="stack-tag">MySQL</span>
+          </div>
+        </div>
+        <div class="card-foot">
+          <!-- TODO: add RideFlow GitHub link + screenshot -->
+          <a class="link-chip todo" href="#">GitHub link pending</a>
+          <span class="img-slot">Image slot</span>
+        </div>
+      </article>
+
+      <!-- InstaHealth -->
+      <article class="card" data-key="ih" data-domains="data backend database">
+        <div class="card-top">
+          <span class="card-num">04</span>
+        </div>
+        <h3 class="title">InstaHealth Dashboard</h3>
+        <div class="field">
+          <p class="field-label">Requirement</p>
+          <p class="field-text">Raw Instagram usage data is hard to interpret without interactive exploration and querying.</p>
+        </div>
+        <div class="field">
+          <p class="field-label">Built</p>
+          <p class="field-text">An analytics dashboard with interactive charts, live SQL execution, and user filtering, supported by exploratory data analysis.</p>
+        </div>
+        <div class="field">
+          <p class="field-label">Architecture</p>
+          <div class="flow">
+            <span class="flow-step">Usage data</span><span class="flow-arrow">&#8595;</span>
+            <span class="flow-step">Flask backend</span><span class="flow-arrow">&#8595;</span>
+            <span class="flow-step">MySQL queries</span><span class="flow-arrow">&#8595;</span>
+            <span class="flow-step">Interactive charts + insights</span>
+          </div>
+        </div>
+        <div class="field">
+          <p class="field-label">Skills demonstrated</p>
+          <div class="tags">
+            <span class="tag">Data</span><span class="tag">Backend</span>
+          </div>
+        </div>
+        <div class="field">
+          <p class="field-label">Technologies</p>
+          <div class="stack">
+            <span class="stack-tag">Flask</span><span class="stack-tag">MySQL</span><span class="stack-tag">EDA</span><span class="stack-tag">Data Visualization</span>
+          </div>
+        </div>
+        <div class="card-foot">
+          <!-- TODO: add InstaHealth GitHub link + screenshot -->
+          <a class="link-chip todo" href="#">GitHub link pending</a>
+          <span class="img-slot">Image slot</span>
+        </div>
+      </article>
+
+      <!-- Bulk Downloader -->
+      <article class="card" data-key="bd" data-domains="extension scripting workflow frontend">
+        <div class="card-top">
+          <span class="card-num">05</span>
+        </div>
+        <h3 class="title">Classroom Bulk Downloader</h3>
+        <div class="field">
+          <p class="field-label">Problem</p>
+          <p class="field-text">Downloading Google Classroom files one at a time is slow and repetitive.</p>
+        </div>
+        <div class="field">
+          <p class="field-label">Built</p>
+          <p class="field-text">A Chrome extension that batch-downloads all Classroom files in one action using DOM manipulation and browser scripting.</p>
+        </div>
+        <div class="field">
+          <p class="field-label">Architecture</p>
+          <div class="flow">
+            <span class="flow-step">Classroom page</span><span class="flow-arrow">&#8595;</span>
+            <span class="flow-step">Content script (DOM scan)</span><span class="flow-arrow">&#8595;</span>
+            <span class="flow-step">Collect file links</span><span class="flow-arrow">&#8595;</span>
+            <span class="flow-step">Batch download</span>
+          </div>
+        </div>
+        <div class="field">
+          <p class="field-label">Skills demonstrated</p>
+          <div class="tags">
+            <span class="tag">Automation</span><span class="tag">Browser Extension</span><span class="tag">Scripting</span>
+          </div>
+        </div>
+        <div class="field">
+          <p class="field-label">Technologies</p>
+          <div class="stack">
+            <span class="stack-tag">HTML</span><span class="stack-tag">CSS</span><span class="stack-tag">JavaScript</span><span class="stack-tag">Chrome API</span>
+          </div>
+        </div>
+        <div class="card-foot">
+          <!-- TODO: add Bulk Downloader GitHub link + screenshot -->
+          <a class="link-chip todo" href="#">GitHub link pending</a>
+          <span class="img-slot">Image slot</span>
+        </div>
+      </article>
+
+      <!-- FAST Cafe -->
+      <article class="card" data-key="fc" data-domains="frontend">
+        <div class="card-top">
+          <span class="card-num">06</span>
+        </div>
+        <h3 class="title">FAST Caf&eacute; Website</h3>
+        <div class="field">
+          <p class="field-label">Problem</p>
+          <p class="field-text">Campus dining had no easy, remotely accessible way to browse and order food.</p>
+        </div>
+        <div class="field">
+          <p class="field-label">Built</p>
+          <p class="field-text">A responsive food-ordering interface focused on a clean browsing and ordering flow.</p>
+        </div>
+        <div class="field">
+          <p class="field-label">Architecture</p>
+          <div class="flow">
+            <span class="flow-step">User</span><span class="flow-arrow">&#8595;</span>
+            <span class="flow-step">Responsive UI (HTML/CSS/JS)</span><span class="flow-arrow">&#8595;</span>
+            <span class="flow-step">Order flow</span>
+          </div>
+        </div>
+        <div class="field">
+          <p class="field-label">Skills demonstrated</p>
+          <div class="tags">
+            <span class="tag">Frontend</span>
+          </div>
+        </div>
+        <div class="field">
+          <p class="field-label">Technologies</p>
+          <div class="stack">
+            <span class="stack-tag">HTML</span><span class="stack-tag">CSS</span><span class="stack-tag">JavaScript</span><span class="stack-tag">Responsive Design</span>
+          </div>
+        </div>
+        <div class="card-foot">
+          <!-- TODO: add FAST Cafe GitHub link + screenshot -->
+          <a class="link-chip todo" href="#">GitHub link pending</a>
+          <span class="img-slot">Image slot</span>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="section" id="about">
+    <div class="about-grid">
+      <p class="eyebrow" style="margin:0;">About</p>
+      <p class="about-text">
+        I am a second year <strong>Data Science</strong> student at FAST National University with a strong
+        foundation in <strong>Python, SQL, and C/C++</strong>. I work comfortably across <strong>machine
+        learning, full stack development, automation, and robotics.</strong> I do not stay in one lane,
+        because the most interesting problems do not either. Alongside building, I have mentored 80+ students
+        as a programming <strong>teaching assistant</strong> and led technical and creative work for university events.
+      </p>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="section" id="contact">
+    <p class="eyebrow">Contact</p>
+    <h2 class="title">Let's build something <span class="accent-word">together</span>.</h2>
+    <div class="contact-grid">
+      <div class="contact-item">
+        <p class="field-label">Email</p>
+        <p class="contact-value"><a href="mailto:laraibbb.work@gmail.com">laraibbb.work@gmail.com</a></p>
+      </div>
+      <div class="contact-item">
+        <p class="field-label">GitHub</p>
+        <p class="contact-value"><a href="https://github.com/laraib-b" target="_blank" rel="noopener noreferrer">github.com/laraib-b</a></p>
+      </div>
+      <div class="contact-item">
+        <p class="field-label">LinkedIn</p>
+        <p class="contact-value"><a href="https://linkedin.com/in/laraib-butt-9a6a18325" target="_blank" rel="noopener noreferrer">laraib-butt</a></p>
+      </div>
+      <div class="contact-item">
+        <p class="field-label">Location</p>
+        <p class="contact-value">Rawalpindi, Pakistan</p>
+      </div>
+    </div>
+    <p class="footer-note">Designed and built by Laraib Butt.</p>
+  </section>
+
+  <script>
+    (function () {
+      // ---- Constellation data: projects (main nodes) + skills (connections) ----
+      var NODES = {
+        // projects
+        hk: { x: 320, y: 200, label: 'Hamara Kisaan', type: 'project', domains: 'ml cv data frontend backend database api' },
+        sd: { x: 700, y: 150, label: 'Self-Driving Car', type: 'project', domains: 'robotics embedded sensors cv ml scripting' },
+        rf: { x: 470, y: 440, label: 'RideFlow', type: 'project', domains: 'backend database api' },
+        ih: { x: 165, y: 405, label: 'InstaHealth', type: 'project', domains: 'data backend database' },
+        bd: { x: 805, y: 335, label: 'Bulk Downloader', type: 'project', domains: 'extension scripting workflow frontend' },
+        fc: { x: 640, y: 480, label: 'FAST Cafe', type: 'project', domains: 'frontend' },
+        // skills
+        tensorflow: { x: 215, y: 95, label: 'TensorFlow', type: 'skill', domains: 'ml' },
+        cvision:    { x: 470, y: 95, label: 'Computer Vision', type: 'skill', domains: 'cv' },
+        react:      { x: 430, y: 295, label: 'React', type: 'skill', domains: 'frontend' },
+        flask:      { x: 150, y: 255, label: 'Flask', type: 'skill', domains: 'backend' },
+        mysql:      { x: 350, y: 370, label: 'MySQL', type: 'skill', domains: 'database' },
+        nodejs:     { x: 565, y: 360, label: 'Node.js', type: 'skill', domains: 'backend' },
+        javascript: { x: 770, y: 470, label: 'JavaScript', type: 'skill', domains: 'frontend' },
+        chromeapi:  { x: 915, y: 300, label: 'Chrome API', type: 'skill', domains: 'extension' },
+        python:     { x: 560, y: 185, label: 'Python', type: 'skill', domains: 'scripting' },
+        esp32:      { x: 880, y: 120, label: 'ESP32', type: 'skill', domains: 'embedded' },
+        mqtt:       { x: 855, y: 215, label: 'MQTT', type: 'skill', domains: 'sensors' }
+      };
+      var LINKS = [
+        ['hk', 'tensorflow'], ['hk', 'cvision'], ['hk', 'react'], ['hk', 'flask'], ['hk', 'mysql'],
+        ['ih', 'flask'], ['ih', 'mysql'],
+        ['rf', 'nodejs'], ['rf', 'mysql'],
+        ['fc', 'javascript'],
+        ['bd', 'javascript'], ['bd', 'chromeapi'],
+        ['sd', 'python'], ['sd', 'esp32'], ['sd', 'mqtt'], ['sd', 'cvision']
+      ];
+
+      var SVGNS = 'http://www.w3.org/2000/svg';
+      var linksGroup = document.getElementById('links');
+      var nodesGroup = document.getElementById('nodes');
+      var nodeEls = {};   // key -> <g>
+      var linkEls = [];   // { el, a, b }
+      // adjacency for hover glow
+      var adj = {};
+      Object.keys(NODES).forEach(function (k) { adj[k] = []; });
+
+      function make(tag, attrs) {
+        var el = document.createElementNS(SVGNS, tag);
+        for (var a in attrs) { el.setAttribute(a, attrs[a]); }
+        return el;
+      }
+
+      // Render links first (behind nodes)
+      LINKS.forEach(function (pair) {
+        var a = pair[0], b = pair[1];
+        var na = NODES[a], nb = NODES[b];
+        var line = make('line', { x1: na.x, y1: na.y, x2: nb.x, y2: nb.y, 'class': 'c-link' });
+        linksGroup.appendChild(line);
+        linkEls.push({ el: line, a: a, b: b });
+        adj[a].push(b); adj[b].push(a);
+      });
+
+      // Render nodes
+      Object.keys(NODES).forEach(function (key) {
+        var n = NODES[key];
+        var g = make('g', { 'class': 'c-node ' + n.type });
+        g.setAttribute('data-key', key);
+        g.setAttribute('data-domains', n.domains);
+        var r = n.type === 'project' ? 7 : 4.5;
+        g.appendChild(make('circle', { cx: n.x, cy: n.y, r: r + 6, 'class': 'ring' }));
+        g.appendChild(make('circle', { cx: n.x, cy: n.y, r: r, 'class': 'dot' }));
+        var label = make('text', {
+          x: n.x, y: n.y - (r + 9),
+          'text-anchor': 'middle'
+        });
+        label.textContent = n.label;
+        g.appendChild(label);
+        nodesGroup.appendChild(g);
+        nodeEls[key] = g;
+
+        // hover glow traces connections
+        g.addEventListener('mouseenter', function () { hover(key, true); });
+        g.addEventListener('mouseleave', function () { hover(key, false); });
+
+        // clicking a project node jumps to its case study
+        if (n.type === 'project') {
+          g.addEventListener('click', function () { goToCard(key); });
+        }
+      });
+
+      function goToCard(key) {
+        var card = document.querySelector('.card[data-key="' + key + '"]');
+        if (!card) return;
+        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        card.classList.remove('focus');
+        void card.offsetWidth; // restart the highlight animation
+        card.classList.add('focus');
+        setTimeout(function () { card.classList.remove('focus'); }, 1600);
+      }
+
+      function hover(key, on) {
+        var related = {};
+        related[key] = true;
+        adj[key].forEach(function (k) { related[k] = true; });
+        Object.keys(nodeEls).forEach(function (k) {
+          nodeEls[k].classList.toggle('glow', on && !!related[k]);
+        });
+        linkEls.forEach(function (l) {
+          var touch = (l.a === key || l.b === key);
+          l.el.classList.toggle('glow', on && touch);
+        });
+      }
+
+      // ---- Filtering (shared by constellation + cards) ----
+      var chips = Array.prototype.slice.call(document.querySelectorAll('.chip, .cluster-head'));
+      var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+      var resetBtn = document.getElementById('reset-filter');
+      var statusEl = document.getElementById('filter-status');
+      var activeChip = null;
+
+      function tokensOf(str) { return (str || '').trim().split(/\s+/).filter(Boolean); }
+      function matches(domainsStr, wanted) {
+        var have = tokensOf(domainsStr);
+        for (var i = 0; i < wanted.length; i++) {
+          if (have.indexOf(wanted[i]) !== -1) return true;
+        }
+        return false;
+      }
+
+      function clearFilter() {
+        chips.forEach(function (c) { c.classList.remove('active'); });
+        activeChip = null;
+        Object.keys(nodeEls).forEach(function (k) {
+          nodeEls[k].classList.remove('dim', 'match');
+        });
+        linkEls.forEach(function (l) { l.el.classList.remove('dim'); });
+        cards.forEach(function (c) { c.classList.remove('dim'); });
+        statusEl.innerHTML = 'Showing all projects &middot; hover a node to trace its connections';
+      }
+
+      function applyFilter(chip) {
+        var wanted = tokensOf(chip.getAttribute('data-domain'));
+        chips.forEach(function (c) { c.classList.remove('active'); });
+        chip.classList.add('active');
+        activeChip = chip;
+
+        // nodes
+        Object.keys(nodeEls).forEach(function (k) {
+          var el = nodeEls[k];
+          var hit = matches(el.getAttribute('data-domains'), wanted);
+          el.classList.toggle('dim', !hit);
+          el.classList.toggle('match', hit && NODES[k].type === 'project');
+        });
+        // links: keep only if both endpoints survive
+        linkEls.forEach(function (l) {
+          var aHit = matches(NODES[l.a].domains, wanted);
+          var bHit = matches(NODES[l.b].domains, wanted);
+          l.el.classList.toggle('dim', !(aHit && bHit));
+        });
+        // cards
+        var count = 0;
+        cards.forEach(function (c) {
+          var hit = matches(c.getAttribute('data-domains'), wanted);
+          c.classList.toggle('dim', !hit);
+          if (hit) count++;
+        });
+
+        var label = (chip.textContent || '').replace(/^[^A-Za-z]+/, '').trim();
+        statusEl.innerHTML = 'Highlighting <strong>' + label + '</strong> &middot; ' + count + ' project' + (count === 1 ? '' : 's');
+      }
+
+      chips.forEach(function (chip) {
+        chip.addEventListener('click', function () {
+          if (activeChip === chip) { clearFilter(); }
+          else { applyFilter(chip); }
+        });
+      });
+      resetBtn.addEventListener('click', clearFilter);
+    })();
+  </script>
+</body>
+</html>
