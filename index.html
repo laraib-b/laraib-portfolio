@@ -487,20 +487,19 @@
         <h3 class="title">AI Email Sorter</h3>
         <div class="field">
           <p class="field-label">Problem</p>
-          <p class="field-text">Important emails get buried in a busy Gmail inbox, and manually sorting them and sharing the right ones with the right people is slow and easy to forget.</p>
+          <p class="field-text">Many of my important emails used to get buried in the Gmail inbox. Searching and sorting them manually was a hassle especially if some important email made its way to spam and I never check it.</p>
         </div>
         <div class="field">
           <p class="field-label">Built</p>
-          <p class="field-text">An n8n automation that reads incoming Gmail messages, classifies each one by topic with an OpenAI chat model, and forwards it to the matching Discord channel within a single server &mdash; fully hands-off.</p>
+          <p class="field-text">An n8n automation that reads incoming Gmail messages, classifies each one by category (defined by me) with an OpenAI chat model, and forwards it to the matching Discord channel within a single server using webhooks.</p>
         </div>
         <div class="field">
           <p class="field-label">Architecture</p>
           <div class="flow">
-            <span class="flow-step">Gmail (new email)</span><span class="flow-arrow">&#8595;</span>
-            <span class="flow-step">n8n workflow</span><span class="flow-arrow">&#8595;</span>
-            <span class="flow-step">OpenAI text classifier</span><span class="flow-arrow">&#8595;</span>
-            <span class="flow-step">Category routing</span><span class="flow-arrow">&#8595;</span>
-            <span class="flow-step">Discord channels</span>
+            <span class="flow-step">Gmail trigger (new email)</span><span class="flow-arrow">&#8595;</span>
+            <span class="flow-step">Text Classifier (OpenAI chat model)</span><span class="flow-arrow">&#8595;</span>
+            <span class="flow-step">Routed into category branches</span><span class="flow-arrow">&#8595;</span>
+            <span class="flow-step">Per-category Discord channels (webhooks)</span>
           </div>
         </div>
         <div class="field">
@@ -516,8 +515,12 @@
           </div>
         </div>
         <div class="card-foot">
-          <!-- TODO: add n8n workflow screenshot (and optional repo link with exported JSON) -->
-          <span class="img-slot">Workflow image</span>
+          <button class="thumb" type="button" data-full="assets/email-sorter-workflow.png" data-caption="n8n workflow &mdash; Gmail trigger into an OpenAI text classifier that routes to category Discord channels" aria-label="Enlarge the n8n workflow diagram">
+            <img src="assets/email-sorter-workflow.png" alt="n8n workflow: Gmail trigger feeding an OpenAI-powered text classifier that fans out to many Discord channels" loading="lazy">
+          </button>
+          <button class="thumb" type="button" data-full="assets/email-sorter-discord.png" data-caption="Discord server &mdash; category channels receiving auto-sorted emails" aria-label="Enlarge the Discord channels screenshot">
+            <img src="assets/email-sorter-discord.png" alt="Discord server showing category channels like jobs, coursera, codes, and bills receiving sorted emails" loading="lazy">
+          </button>
         </div>
       </article>
 
