@@ -3,823 +3,1151 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Laraib Butt | Intelligent Systems</title>
+  <title>Laraib Butt | Engineering Journal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Patrick+Hand&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap');
-
     :root {
-      /* Palette */
-      --bg: #f8f6f1;
-      --surface: #f8f6f1;
-      --hover-bg: #f2efe8;
-      --text-main: #1a1916;
-      --text-muted: #7a7672;
-      --text-soft: #a09c96;
-      --border: #d9d6ce;
-      --chip-border: #c9c6be;
-      --node-fill: #eeeae2;
-      --accent: #b56576;        /* dusty rose */
-      --accent-soft: #c68493;
-      --accent-tint: #efdfe2;
-
-      /* One strict type scale */
-      --fs-display: 40px;
-      --fs-h2: 24px;
-      --fs-h3: 18px;
-      --fs-eyebrow: 10px;
-      --fs-body: 13px;
-      --fs-meta: 11px;
-      --fs-tag: 10px;
-
-      --serif: 'DM Serif Display', serif;
-      --sans: 'DM Sans', sans-serif;
+      --paper: #f3ecda;
+      --paper-warm: #ebe3cf;
+      --paper-line: rgba(88, 78, 66, 0.14);
+      --ink: #2a2620;
+      --graphite: #4a443c;
+      --soft-ink: #6d6358;
+      --rose: #c49a9f;
+      --rose-fade: rgba(196, 154, 159, 0.45);
+      --sage: #9aab94;
+      --sage-fade: rgba(154, 171, 148, 0.4);
+      --navy: #6b7289;
+      --sticky: #ede4b8;
+      --sticky-pink: #e8cfc8;
+      --pencil: #524c44;
+      --hand: 'Patrick Hand', cursive;
+      --doodle: 'Gaegu', cursive;
+      --scribble: 'Caveat', cursive;
     }
 
     * { box-sizing: border-box; }
 
+    html { overflow-x: clip; scroll-behavior: auto; }
+
     body {
       margin: 0;
-      font-family: var(--sans);
-      background: var(--bg);
-      color: var(--text-main);
-      -webkit-font-smoothing: antialiased;
+      color: var(--ink);
+      font-family: var(--doodle);
+      font-size: 19px;
+      line-height: 1.22;
+      background:
+        radial-gradient(circle at 18% 22%, rgba(90, 72, 56, 0.022), transparent 22%),
+        radial-gradient(circle at 82% 68%, rgba(107, 114, 137, 0.016), transparent 24%),
+        radial-gradient(circle at 12px 12px, rgba(72, 62, 52, 0.05) 1px, transparent 1.4px) 0 0 / 24px 24px,
+        linear-gradient(90deg, rgba(196, 154, 159, 0.12) 0 1px, transparent 1px 100%) 72px 0 / 100% 100%,
+        repeating-linear-gradient(0deg, transparent 0 31px, var(--paper-line) 31px 32px),
+        var(--paper);
     }
 
     a { color: inherit; text-decoration: none; }
+    [id] { scroll-margin-top: 24px; }
 
-    /* ---- Shared type primitives (consistent everywhere) ---- */
-    .eyebrow {
-      font-size: var(--fs-eyebrow);
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--text-soft);
-      margin: 0 0 16px;
-      font-weight: 400;
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      html { scroll-behavior: auto; }
     }
-    .title {
-      font-family: var(--serif);
-      font-weight: 400;
-      font-style: normal;
-      line-height: 1.15;
-      color: var(--text-main);
-      margin: 0;
-    }
-    h1.title { font-size: var(--fs-display); }
-    h2.title { font-size: var(--fs-h2); }
-    h3.title { font-size: var(--fs-h3); }
-    /* The ONE intentional italic-accent use */
-    .accent-word { font-style: italic; color: var(--accent); }
 
-    .section { padding: 44px 36px; border-top: 0.5px solid var(--border); }
-
-    /* ---- Nav ---- */
-    .nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 36px;
-      border-bottom: 0.5px solid var(--border);
-    }
-    .nav-name { font-family: var(--serif); font-size: 16px; }
-    .nav-links { display: flex; gap: 24px; font-size: var(--fs-meta); color: #888580; letter-spacing: 0.5px; }
-    .nav-links a:hover { color: var(--text-main); }
-    .nav-links .accent-link { color: var(--accent); }
-
-    /* ---- Hero ---- */
-    .hero { padding: 64px 36px 52px; }
-    .hero-inner { max-width: 760px; }
-    .hero h1 { margin: 0 0 20px; }
-    .hero p {
-      font-size: var(--fs-body);
-      color: var(--text-muted);
-      line-height: 1.75;
-      margin: 0 0 26px;
-      max-width: 560px;
-    }
-    .hero-meta { display: flex; gap: 22px; flex-wrap: wrap; font-size: var(--fs-meta); color: var(--text-soft); }
-    .hero-meta span strong { color: var(--text-main); font-weight: 500; }
-
-    /* ---- Capability map / filters ---- */
-    .capmap-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 1px;
-      background: var(--border);
-      border: 0.5px solid var(--border);
-      margin-top: 4px;
-    }
-    .cluster { background: var(--surface); padding: 20px 18px 22px; }
-    .cluster-head {
-      font-family: var(--serif);
-      font-size: 15px;
-      margin: 0 0 14px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      line-height: 1.2;
-    }
-    .cluster-head .glyph { font-size: 14px; }
-    .cluster-head:hover { color: var(--accent); }
-    .chip-list { display: flex; flex-direction: column; gap: 7px; align-items: flex-start; }
-    .chip {
-      font-size: var(--fs-meta);
-      color: #5a5754;
-      border: 0.5px solid var(--chip-border);
-      background: transparent;
-      border-radius: 18px;
-      padding: 4px 11px;
-      cursor: pointer;
-      font-family: var(--sans);
-      transition: background 0.18s, color 0.18s, border-color 0.18s;
-    }
-    .chip:hover { border-color: var(--accent-soft); color: var(--accent); }
-    .chip.active, .cluster-head.active {
-      color: #fff;
-      background: var(--accent);
-      border-color: var(--accent);
-    }
-    .cluster-head.active { color: var(--accent); background: transparent; }
-    .filter-bar {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-top: 18px;
-      flex-wrap: wrap;
-      font-size: var(--fs-meta);
-      color: var(--text-soft);
-    }
-    .reset-chip {
-      font-size: var(--fs-meta);
-      border: 0.5px solid var(--chip-border);
-      border-radius: 18px;
-      padding: 4px 12px;
-      cursor: pointer;
-      background: transparent;
-      font-family: var(--sans);
-      color: #5a5754;
-    }
-    .reset-chip:hover { border-color: var(--accent-soft); color: var(--accent); }
-    #filter-status strong { color: var(--accent); font-weight: 500; }
-
-    /* ---- Constellation ---- */
-    .constellation-wrap {
-      margin-top: 6px;
-      border: 0.5px solid var(--border);
-      background:
-        radial-gradient(circle at 30% 25%, rgba(181,101,118,0.05), transparent 60%),
-        var(--surface);
+    /* —— doodles scattered on the page —— */
+    .doodle-field {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
       overflow: hidden;
+      contain: layout style paint;
+      transform: translateZ(0);
     }
-    .constellation { display: block; width: 100%; height: auto; }
+    .doodle-field svg {
+      position: absolute;
+      opacity: 0.22;
+      color: var(--graphite);
+    }
+    .doodle-field .d1 { top: 8%; right: 6%; width: 42px; transform: rotate(12deg); }
+    .doodle-field .d2 { top: 34%; right: 3%; width: 36px; transform: rotate(-8deg); }
+    .doodle-field .d3 { bottom: 18%; left: 4%; width: 48px; transform: rotate(6deg); }
+    .doodle-field .d4 { top: 62%; left: 2%; width: 32px; transform: rotate(-14deg); }
+    .doodle-field .d5 { bottom: 8%; right: 12%; width: 38px; transform: rotate(4deg); }
 
-    .c-link {
-      stroke: #ccc7bd;
-      stroke-width: 1;
-      transition: stroke 0.25s, stroke-width 0.25s, opacity 0.25s;
+    /* —— PNG stickers on entries —— */
+    .journal-entry:has(.entry-sticker) {
+      z-index: 5;
+      overflow: visible;
     }
-    .c-node .dot {
-      transition: opacity 0.25s, fill 0.25s, r 0.2s;
-    }
-    .c-node .ring {
-      fill: none; stroke: var(--accent); stroke-width: 1.2;
-      opacity: 0; transition: opacity 0.25s;
-    }
-    .c-node text {
-      font-family: var(--sans);
-      fill: var(--text-muted);
-      transition: fill 0.25s, opacity 0.25s;
-    }
-    .c-node.project .dot { fill: var(--accent); }
-    .c-node.project text { fill: var(--text-main); font-size: 13px; }
-    .c-node.skill .dot { fill: #bdb8b0; }
-    .c-node.skill text { font-size: 11px; }
-    .c-node { cursor: pointer; }
 
-    /* hover glow */
-    .c-link.glow { stroke: var(--accent); stroke-width: 1.8; filter: drop-shadow(0 0 4px rgba(181,101,118,0.55)); }
-    .c-node.glow .dot { filter: drop-shadow(0 0 6px rgba(181,101,118,0.65)); }
-    .c-node.glow.skill .dot { fill: var(--accent-soft); }
-    .c-node.glow text { fill: var(--accent); }
-    .c-node.glow .ring { opacity: 1; }
-
-    /* filter dim/highlight */
-    .c-link.dim { opacity: 0.08; }
-    .c-node.dim .dot { opacity: 0.16; }
-    .c-node.dim text { opacity: 0.18; }
-    .c-node.match .ring { opacity: 1; }
-
-    .legend {
-      display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
-      margin-top: 14px;
-      font-size: var(--fs-meta);
-      color: var(--text-soft);
+    .entry-sticker {
+      position: absolute;
+      bottom: 14px;
+      right: 10px;
+      width: 84px;
+      height: auto;
+      z-index: 100;
+      pointer-events: none;
+      filter: drop-shadow(2px 4px 5px rgba(42, 38, 32, 0.3));
+      transform: rotate(11deg);
     }
-    .legend .swatch { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
-    .legend .sw-project { background: var(--accent); }
-    .legend .sw-skill { background: #bdb8b0; }
 
-    /* ---- Project case-study cards ---- */
-    .cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: var(--border); border: 0.5px solid var(--border); margin-top: 6px; }
-    .card {
-      background: var(--surface);
-      padding: 28px 26px 24px;
-      transition: background 0.2s, opacity 0.25s;
+    .entry-sticker--left {
+      left: -76px;
+      right: auto;
+      bottom: 28px;
+      transform: rotate(-13deg);
+    }
+
+    .page {
+      width: min(1140px, calc(100% - 36px));
+      margin: 26px auto 56px;
+      display: grid;
+      grid-template-columns: 178px minmax(0, 1fr);
+      grid-template-rows: auto 1fr;
+      gap: 20px 26px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .sidebar,
+    .hero,
+    .main {
+      position: relative;
+      z-index: 1;
+    }
+
+  /* —— sidebar = journal index —— */
+    .sidebar {
+      grid-column: 1;
+      grid-row: 1 / -1;
+      position: sticky;
+      top: 20px;
+      align-self: start;
       display: flex;
       flex-direction: column;
+      min-height: calc(100vh - 40px);
+      padding: 24px 18px 20px;
+      border-right: 1.5px dashed rgba(82, 74, 65, 0.22);
     }
-    .card:hover { background: var(--hover-bg); }
-    .card.dim { opacity: 0.32; }
-    .card.focus { animation: card-focus 1.6s ease; }
-    @keyframes card-focus {
-      0% { box-shadow: inset 0 0 0 0 var(--accent); background: var(--accent-tint); }
-      30% { box-shadow: inset 0 0 0 2px var(--accent); background: var(--accent-tint); }
-      100% { box-shadow: inset 0 0 0 0 transparent; background: var(--surface); }
-    }
-    .card-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 10px; }
-    .card-num { font-family: var(--serif); font-style: italic; font-size: var(--fs-meta); color: #c0bbb4; }
-    .card h3 { margin: 0 0 16px; }
 
-    .field { margin-bottom: 14px; }
-    .field-label { font-size: var(--fs-eyebrow); letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-soft); margin: 0 0 5px; }
-    .field-text { font-size: var(--fs-body); color: var(--text-muted); line-height: 1.6; margin: 0; }
+    .brand {
+      font-family: var(--hand);
+      font-size: 38px;
+      line-height: 0.9;
+      margin: 0 0 6px;
+      transform: rotate(-1.5deg);
+    }
 
-    .flow { display: flex; flex-direction: column; gap: 5px; align-items: flex-start; }
-    .flow-step {
-      font-size: var(--fs-meta);
-      color: #5a5754;
-      border: 0.5px solid var(--chip-border);
-      border-radius: 4px;
-      padding: 4px 10px;
-      background: var(--node-fill);
+    .journal-label {
+      font-family: var(--scribble);
+      font-size: 22px;
+      color: var(--soft-ink);
+      margin: 0 0 18px;
+      transform: rotate(0.8deg);
     }
-    .flow-arrow { color: var(--accent-soft); font-size: var(--fs-meta); line-height: 1; padding-left: 12px; }
 
-    .tags { display: flex; gap: 5px; flex-wrap: wrap; margin: 4px 0 14px; }
-    .tag {
-      font-size: var(--fs-tag);
-      letter-spacing: 0.4px;
-      text-transform: uppercase;
-      color: var(--accent);
-      border: 0.5px solid var(--accent-soft);
-      border-radius: 3px;
-      padding: 2px 7px;
-      background: var(--accent-tint);
-    }
-    .stack { display: flex; gap: 5px; flex-wrap: wrap; }
-    .stack-tag { font-size: var(--fs-tag); color: #9a9690; border: 0.5px solid var(--chip-border); border-radius: 3px; padding: 2px 7px; }
+    .cat { width: 70px; height: 52px; margin-bottom: 8px; opacity: 0.85; }
 
-    .card-foot { display: flex; gap: 8px; align-items: center; margin-top: 16px; padding-top: 14px; border-top: 0.5px solid var(--border); flex-wrap: wrap; }
-    .link-chip { font-size: var(--fs-tag); letter-spacing: 0.5px; text-transform: uppercase; border: 0.5px solid var(--chip-border); border-radius: 16px; padding: 4px 9px; color: #5a5754; }
-    .link-chip.todo { border-style: dashed; color: var(--text-soft); }
-    /* Filled, high-visibility GitHub link */
-    a.link-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      color: #fff;
-      background: var(--accent);
-      border-color: var(--accent);
-      font-weight: 500;
-      transition: background 0.18s, box-shadow 0.18s, transform 0.12s;
+    .nav-list {
+      list-style: none;
+      padding: 0;
+      margin: 20px 0;
+      font-family: var(--hand);
+      font-size: 20px;
     }
-    a.link-chip:hover {
-      background: var(--accent-soft);
-      box-shadow: 0 2px 10px rgba(181, 101, 118, 0.4);
-      transform: translateY(-1px);
+    .nav-list li { margin: 11px 0; transform: rotate(var(--nav-tilt, 0deg)); }
+    .nav-list li:nth-child(1) { --nav-tilt: -1deg; }
+    .nav-list li:nth-child(2) { --nav-tilt: 0.6deg; }
+    .nav-list li:nth-child(3) { --nav-tilt: -0.4deg; }
+    .nav-list li:nth-child(4) { --nav-tilt: 1deg; }
+    .nav-list a {
+      display: inline-block;
+      border-bottom: 1.5px solid transparent;
+      transition: color 0.25s ease, border-color 0.25s ease;
     }
-    .gh-ico { width: 13px; height: 13px; fill: currentColor; flex-shrink: 0; }
-    .img-slot { font-size: var(--fs-tag); letter-spacing: 0.5px; text-transform: uppercase; border: 0.5px dashed var(--chip-border); border-radius: 4px; padding: 6px 10px; color: var(--text-soft); }
-    /* Small framed thumbnail (click to enlarge) */
-    .thumb {
-      padding: 4px;
-      border: 0.5px solid var(--chip-border);
-      border-radius: 6px;
-      background: #fff;
-      width: 76px;
-      height: 60px;
+    .nav-list a:hover {
+      color: var(--navy);
+      border-color: var(--rose);
+    }
+
+    .sticky-note {
+      margin-top: auto;
+      padding: 16px 14px;
+      background: var(--sticky-pink);
+      font-family: var(--scribble);
+      font-size: 20px;
+      line-height: 1.1;
+      position: relative;
+      transform: rotate(-2.5deg);
+      border: 1.5px solid rgba(82, 74, 65, 0.35);
+      box-shadow: 3px 4px 0 rgba(42, 38, 32, 0.06);
+    }
+    .sticky-note::before {
+      content: "";
+      position: absolute;
+      top: -10px;
+      left: 28px;
+      width: 68px;
+      height: 20px;
+      background: rgba(237, 228, 184, 0.75);
+      border: 1px solid rgba(132, 109, 77, 0.25);
+      transform: rotate(-4deg);
+    }
+
+  /* —— opening spread —— */
+    .hero {
+      grid-column: 2;
+      padding: 12px 8px 20px 4px;
+      position: relative;
+      border-bottom: 1.5px dashed rgba(82, 74, 65, 0.2);
+      overflow: visible;
+    }
+
+    .hero::after {
+      content: "← start here";
+      position: absolute;
+      right: 12px;
+      top: 6px;
+      font-family: var(--scribble);
+      font-size: 18px;
+      color: var(--soft-ink);
+      transform: rotate(3deg);
+      opacity: 0.7;
+    }
+
+    .quote {
+      font-family: var(--hand);
+      font-size: 30px;
+      line-height: 1.08;
+      max-width: 640px;
+      margin: 0;
+      transform: rotate(-0.6deg);
+    }
+    .quote .mark { color: var(--rose); font-size: 36px; vertical-align: -6px; }
+
+    .meta {
+      font-family: var(--scribble);
+      font-size: 20px;
+      line-height: 1.05;
+      color: var(--soft-ink);
+      margin: 14px 0 0;
+      transform: rotate(1deg);
+    }
+
+  /* —— main journal body —— */
+    .main {
+      grid-column: 2;
+      grid-row: 2;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      min-width: 0;
+      contain: layout style;
+    }
+
+    .spread {
+      position: relative;
+      padding: 28px 24px 36px;
+      margin-bottom: 8px;
+      content-visibility: auto;
+      contain-intrinsic-size: auto 320px;
+    }
+
+    .spread::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 1px;
+      background: repeating-linear-gradient(90deg, var(--pencil) 0 4px, transparent 4px 10px);
+      opacity: 0.15;
+    }
+
+    .spread:first-child::before { display: none; }
+
+    /* —— notebook wear (subtle, lived-in) —— */
+    .spread { overflow: visible; }
+
+    .wear-fold {
+      position: absolute;
+      top: -1px;
+      right: 0;
+      width: 32px;
+      height: 32px;
+      pointer-events: none;
+      z-index: 2;
+      background: linear-gradient(225deg, var(--paper-warm) 48%, #ddd4c0 48%, #c9bfab 52%, transparent 52%);
+      box-shadow: -2px 2px 4px rgba(42, 38, 32, 0.06);
+    }
+
+    .wear-stain {
+      position: absolute;
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      pointer-events: none;
+      background:
+        radial-gradient(circle, transparent 38%, rgba(125, 98, 68, 0.05) 40%, rgba(125, 98, 68, 0.09) 48%, rgba(125, 98, 68, 0.04) 52%, transparent 54%);
+      opacity: 0.85;
+    }
+
+    .wear-smudge {
+      position: absolute;
+      width: 72px;
+      height: 28px;
+      pointer-events: none;
+      background: rgba(74, 68, 60, 0.055);
+      border-radius: 50%;
+      filter: blur(4px);
+      transform: rotate(var(--smudge-tilt, -14deg));
+    }
+
+    .crossed-out {
+      display: inline;
+      text-decoration: line-through;
+      text-decoration-color: rgba(74, 68, 60, 0.4);
+      text-decoration-thickness: 1.5px;
+      opacity: 0.5;
+      font-family: var(--scribble);
+      font-size: 0.95em;
+    }
+
+    .erased-ghost {
+      display: block;
+      font-family: var(--scribble);
+      font-size: 16px;
+      color: rgba(109, 99, 88, 0.22);
+      transform: rotate(-3deg);
+      margin-top: 8px;
+      position: relative;
+      user-select: none;
+    }
+    .erased-ghost::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 20%;
+      top: 45%;
+      height: 14px;
+      background: repeating-linear-gradient(
+        -4deg,
+        transparent 0 3px,
+        rgba(74, 68, 60, 0.05) 3px 4px
+      );
+    }
+
+    .section-title {
+      display: inline-block;
+      font-family: var(--hand);
+      font-size: 32px;
+      line-height: 1;
+      margin: 0 0 10px;
+      position: relative;
+      transform: rotate(-0.8deg);
+    }
+
+    .section-title .underline-draw {
+      position: absolute;
+      left: 0;
+      bottom: -2px;
+      width: 100%;
+      height: 8px;
+      overflow: visible;
+    }
+    .section-title .underline-draw path {
+      fill: none;
+      stroke: var(--rose-fade);
+      stroke-width: 3;
+      stroke-linecap: round;
+      stroke-dasharray: 200;
+      stroke-dashoffset: 200;
+    }
+    .section-title.is-visible .underline-draw path {
+      animation: draw-line 1.4s ease forwards;
+    }
+
+    @keyframes draw-line {
+      to { stroke-dashoffset: 0; }
+    }
+
+    .section-copy {
+      font-family: var(--doodle);
+      font-size: 19px;
+      line-height: 1.18;
+      margin: 0 0 16px;
+      max-width: 620px;
+      color: var(--graphite);
+    }
+
+    .margin-note {
+      position: absolute;
+      font-family: var(--scribble);
+      font-size: 17px;
+      line-height: 1.05;
+      color: var(--navy);
+      max-width: 120px;
+      opacity: 0;
+      transform: rotate(var(--note-tilt, 4deg)) translateY(6px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      pointer-events: none;
+    }
+    .margin-note.is-visible {
+      opacity: 0.82;
+      transform: rotate(var(--note-tilt, 4deg)) translateY(0);
+    }
+    .margin-note--right { right: -8px; top: 18%; }
+    .margin-note--left { left: -6px; top: 28%; }
+    @media (max-width: 980px) {
+      .margin-note--right, .margin-note--left {
+        position: relative;
+        right: auto; left: auto; top: auto;
+        max-width: none;
+        margin: 0 0 12px;
+        opacity: 0.82;
+        transform: rotate(-1deg);
+      }
+    }
+
+    .about p {
+      font-family: var(--doodle);
+      font-size: 20px;
+      line-height: 1.2;
+      margin: 0;
+      max-width: 580px;
+      transform: rotate(0.3deg);
+    }
+
+  /* —— constellation map —— */
+    .map-wrap {
+      padding: 24px 12px 18px;
+      position: relative;
+      background:
+        radial-gradient(circle at 88% 12%, rgba(196, 154, 159, 0.08), transparent 28%),
+        radial-gradient(circle at 12% 78%, rgba(154, 171, 148, 0.1), transparent 32%);
+    }
+
+    .map-wrap .margin-note { top: 8%; right: 4px; --note-tilt: 6deg; }
+
+    .map-svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      margin-top: 6px;
+    }
+
+    .map-svg .map-path {
+      fill: none;
+      stroke: var(--pencil);
+      stroke-width: 1.35;
+      stroke-linecap: round;
+      opacity: 0.42;
+    }
+    .map-svg.map-drawn .map-path {
+      animation: draw-map-path 2.4s ease forwards;
+    }
+    .map-svg .map-path:nth-child(odd) { animation-delay: 0.1s; }
+    .map-svg .map-path:nth-child(3n) { animation-delay: 0.25s; }
+    .map-svg .map-path:nth-child(5n) { animation-delay: 0.4s; }
+
+    @keyframes draw-map-path {
+      to { stroke-dashoffset: 0; }
+    }
+
+    .map-svg .map-node { cursor: pointer; }
+    .map-svg .map-node:hover .proj-star { fill: var(--rose); }
+    .map-svg .map-node:hover .proj-label { fill: var(--navy); }
+    .map-svg .skill-node { pointer-events: none; }
+
+    .map-svg .proj-star {
+      fill: var(--rose);
+      font-family: var(--hand);
+      font-size: 30px;
+      text-anchor: middle;
+      opacity: 0.88;
+    }
+    .map-svg.map-in-view .proj-star {
+      animation: twinkle 4s ease-in-out infinite;
+    }
+    .map-svg .map-node:nth-child(3n) .proj-star { animation-delay: 0.8s; }
+    .map-svg .map-node:nth-child(5n) .proj-star { animation-delay: 1.6s; }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.75; }
+      50% { opacity: 1; }
+    }
+
+    .map-svg .proj-label {
+      fill: var(--ink);
+      font-family: var(--hand);
+      font-size: 19px;
+      text-anchor: middle;
+    }
+    .map-svg .skill-dot {
+      fill: var(--paper);
+      stroke: var(--pencil);
+      stroke-width: 1.3;
+    }
+    .map-svg .skill-label {
+      fill: var(--soft-ink);
+      font-family: var(--doodle);
+      font-size: 18px;
+      text-anchor: middle;
+    }
+
+    .map-hover-note {
+      font-family: var(--scribble);
+      font-size: 16px;
+      fill: var(--navy);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+    .map-node:hover .map-hover-note,
+    .map-node:focus .map-hover-note { opacity: 0.9; }
+
+    .legend {
+      margin-top: 14px;
+      font-family: var(--scribble);
+      font-size: 17px;
+      color: var(--soft-ink);
+      transform: rotate(-0.5deg);
+    }
+
+  /* —— journal entries (not cards) —— */
+    .journal-entries {
+      display: flex;
+      flex-direction: column;
+      gap: 52px;
+      padding: 32px 0 20px;
+      position: relative;
+      overflow: visible;
+    }
+
+    .journal-entry {
+      position: relative;
+      overflow: visible;
+      padding: 22px 20px 28px;
+      max-width: 92%;
+      transform: rotate(var(--entry-tilt, 0deg));
+      border: 1.5px solid rgba(82, 74, 65, 0.32);
+      background:
+        repeating-linear-gradient(0deg, transparent 0 29px, rgba(87, 78, 69, 0.08) 29px 30px),
+        rgba(252, 247, 236, 0.65);
+      box-shadow: 5px 7px 0 rgba(42, 38, 32, 0.05);
+      content-visibility: auto;
+      contain-intrinsic-size: auto 460px;
+    }
+    .journal-entry:nth-child(odd) { --entry-tilt: -0.7deg; margin-left: 0; margin-right: auto; }
+    .journal-entry:nth-child(even) { --entry-tilt: 0.9deg; margin-left: auto; margin-right: 0; max-width: 88%; }
+    .journal-entry:nth-child(3n) { max-width: 94%; }
+
+    .entry-meta {
+      font-family: var(--scribble);
+      font-size: 17px;
+      color: var(--soft-ink);
+      margin: 0 0 6px;
+      transform: rotate(0.5deg);
+    }
+
+    .entry-title {
+      font-family: var(--hand);
+      font-size: 28px;
+      margin: 0 0 14px;
+      line-height: 1;
+    }
+    .journal-entry:has(.entry-note) .entry-title {
+      padding-right: min(210px, 40%);
+    }
+
+    .journal-line {
+      margin: 0 0 10px;
+      font-size: 18px;
+      line-height: 1.2;
+    }
+    .journal-line .lbl {
+      font-family: var(--hand);
+      color: var(--navy);
+      font-size: 17px;
+    }
+
+    .entry-note {
+      position: absolute;
+      top: 44px;
+      right: 18px;
+      width: min(200px, 36%);
+      text-align: right;
+      display: block;
+      font-family: var(--scribble);
+      font-size: 16px;
+      color: var(--rose);
+      margin: 0;
+      transform: rotate(-2deg);
+      opacity: 0;
+      transition: opacity 0.6s ease 0.2s;
+      line-height: 1.15;
+    }
+    .journal-entry.is-visible .entry-note { opacity: 0.88; }
+
+    .tech-scribble {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 14px;
+      margin: 14px 0 10px;
+      font-family: var(--scribble);
+      font-size: 16px;
+      color: var(--graphite);
+    }
+    .tech-scribble span::before { content: "○ "; color: var(--sage); }
+
+    .arch-sketch {
+      display: block;
+      width: min(100%, 340px);
+      margin: 16px 0 8px;
+      opacity: 0.88;
+      transform: rotate(var(--sketch-tilt, -1deg));
+    }
+    .arch-sketch--flow {
+      width: min(100%, 400px);
+    }
+    .arch-sketch--tree {
+      width: 100%;
+      max-width: 100%;
+    }
+    .arch-sketch path.sketch-node {
+      fill: rgba(252, 247, 236, 0.35);
+      stroke: var(--pencil);
+      stroke-width: 1.45;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .arch-sketch .sketch-node--dash {
+      stroke-dasharray: 5 4;
+    }
+    .arch-sketch path, .arch-sketch line, .arch-sketch rect, .arch-sketch ellipse {
+      fill: none;
+      stroke: var(--pencil);
+      stroke-width: 1.4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .arch-sketch .sketch-label {
+      font-family: var(--scribble);
+      font-size: 15px;
+      fill: var(--soft-ink);
+      stroke: none;
+    }
+    .arch-sketch--text .sketch-label--node {
+      font-family: var(--scribble);
+      font-size: 17px;
+      fill: var(--ink);
+      text-anchor: middle;
+      dominant-baseline: central;
+    }
+    .arch-sketch--text .sketch-arrow {
+      stroke-width: 1.35;
+      opacity: 0.85;
+    }
+    .arch-sketch .sketch-arrows {
+      filter: none;
+    }
+    .journal-entry.is-visible .arch-sketch .sketch-arrows {
+      filter: url(#roughen);
+    }
+    .arch-sketch .sketch-arrow {
+      stroke-dasharray: 80;
+      stroke-dashoffset: 80;
+      marker-end: url(#sketch-tip);
+    }
+    .arch-sketch .sketch-head {
+      fill: var(--pencil);
+      stroke: none;
+    }
+    .journal-entry.is-visible .arch-sketch .sketch-arrow {
+      animation: draw-line 1.8s ease 0.3s forwards;
+    }
+
+    .photo-cluster {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px 22px;
+      margin-top: 16px;
+      align-items: flex-start;
+    }
+
+    .photo-cluster--right {
+      position: absolute;
+      top: 86px;
+      right: 72px;
+      margin: 0;
+      width: min(210px, 38%);
+      flex-direction: column;
+      align-items: flex-end;
+      z-index: 2;
+    }
+    .photo-cluster--right figure {
+      margin: 0;
+    }
+    .photo-cluster--right .photo-cap {
+      text-align: right;
+      max-width: 100%;
+    }
+
+    #fc .entry-note {
+      right: 72px;
+    }
+
+    #fc:has(.photo-cluster--right) .journal-line,
+    #fc:has(.photo-cluster--right) .tech-scribble,
+    #fc:has(.photo-cluster--right) .entry-link {
+      max-width: 56%;
+    }
+
+    .taped-photo {
+      position: relative;
+      margin: 0;
+      padding: 0;
+      border: none;
+      background: none;
       cursor: zoom-in;
-      overflow: hidden;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      transition: box-shadow 0.18s, transform 0.12s, border-color 0.18s;
+      transform: rotate(var(--photo-tilt, -2deg));
+      transition: transform 0.25s ease;
     }
-    .thumb:hover { box-shadow: 0 3px 12px rgba(26, 25, 22, 0.14); transform: translateY(-1px); border-color: var(--accent-soft); }
-    .thumb img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; }
+    .taped-photo:hover { transform: rotate(0deg) scale(1.02); }
+    .taped-photo::before {
+      content: "";
+      position: absolute;
+      top: -8px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-3deg);
+      width: 52px;
+      height: 16px;
+      background: rgba(237, 228, 184, 0.8);
+      border: 1px solid rgba(132, 109, 77, 0.2);
+      z-index: 1;
+    }
+    .taped-photo img {
+      display: block;
+      max-width: 200px;
+      border: 1.5px solid var(--pencil);
+      padding: 5px;
+      background: #fff;
+      box-shadow: 3px 5px 0 rgba(42, 38, 32, 0.07);
+    }
+    .photo-cap {
+      font-family: var(--scribble);
+      font-size: 15px;
+      color: var(--soft-ink);
+      margin-top: 6px;
+      max-width: 200px;
+      transform: rotate(1deg);
+    }
 
-    /* Lightbox */
+    .entry-link {
+      display: inline-block;
+      font-family: var(--hand);
+      font-size: 17px;
+      margin-top: 10px;
+      padding: 3px 10px;
+      border: 1.5px dashed var(--pencil);
+      background: var(--sticky);
+      transform: rotate(-1deg);
+      transition: background 0.2s ease;
+    }
+    .entry-link:hover { background: var(--sage-fade); }
+
+    .contact p {
+      font-family: var(--doodle);
+      font-size: 20px;
+      line-height: 1.35;
+      margin: 0;
+      transform: rotate(0.4deg);
+    }
+    .contact a { border-bottom: 1px dashed var(--rose); }
+    .contact a:hover { color: var(--navy); }
+
+    .page-scribble {
+      text-align: center;
+      font-family: var(--scribble);
+      font-size: 16px;
+      color: var(--soft-ink);
+      opacity: 0.5;
+      padding: 20px 0 8px;
+      transform: rotate(-1deg);
+    }
+
+    /* lightbox */
     .lightbox {
       position: fixed;
       inset: 0;
-      background: rgba(26, 25, 22, 0.82);
       display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 5vh 5vw;
-      z-index: 1000;
-      opacity: 0;
-      transition: opacity 0.2s ease;
+      place-items: center;
+      background: rgba(34, 30, 26, 0.78);
+      z-index: 50;
+      padding: 32px;
     }
-    .lightbox.open { display: flex; opacity: 1; }
-    .lightbox figure { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 12px; }
-    .lightbox img { max-width: 90vw; max-height: 82vh; object-fit: contain; background: #fff; padding: 8px; border-radius: 4px; box-shadow: 0 16px 50px rgba(0, 0, 0, 0.45); }
-    .lightbox figcaption { color: #f2efe8; font-size: var(--fs-meta); letter-spacing: 0.5px; text-align: center; max-width: 90vw; }
-    .lightbox-close {
-      position: absolute;
-      top: 18px;
-      right: 24px;
-      width: 38px;
-      height: 38px;
-      border: 0.5px solid rgba(255, 255, 255, 0.5);
-      border-radius: 50%;
+    .lightbox.open { display: grid; }
+    .lightbox figure { margin: 0; text-align: center; }
+    .lightbox img {
+      max-width: 90vw;
+      max-height: 82vh;
+      background: #fff;
+      border: 2px solid var(--pencil);
+      padding: 8px;
+      object-fit: contain;
+      transform: rotate(-0.5deg);
+    }
+    .lightbox figcaption {
+      color: var(--paper);
+      font-family: var(--scribble);
+      font-size: 20px;
+      margin-top: 10px;
+    }
+    .close {
+      position: fixed;
+      top: 22px;
+      right: 28px;
+      border: 2px solid var(--paper);
       background: transparent;
-      color: #fff;
-      font-size: 22px;
-      line-height: 1;
+      color: var(--paper);
+      border-radius: 50%;
+      width: 42px;
+      height: 42px;
+      font-size: 26px;
       cursor: pointer;
-      transition: background 0.18s;
+      font-family: var(--hand);
     }
-    .lightbox-close:hover { background: rgba(255, 255, 255, 0.15); }
 
-    /* ---- About + Contact ---- */
-    .about-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 40px; align-items: start; }
-    .about-text { font-size: var(--fs-body); color: #5a5754; line-height: 1.85; margin: 0; }
-    .about-text strong { color: var(--text-main); font-weight: 500; }
-
-    .contact-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-top: 6px; }
-    .contact-item { border: 0.5px solid var(--border); padding: 14px 14px 12px; }
-    .contact-item .field-label { margin-bottom: 6px; }
-    .contact-value { margin: 0; font-size: var(--fs-body); color: #4a4845; word-break: break-word; }
-    .contact-value a:hover { color: var(--accent); }
-
-    .footer-note { margin-top: 26px; font-size: var(--fs-meta); color: var(--text-soft); }
-
-    /* ---- Responsive ---- */
-    @media (max-width: 880px) {
-      .nav { flex-direction: column; align-items: flex-start; gap: 12px; }
-      .nav-links { flex-wrap: wrap; gap: 14px; }
-      .capmap-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .cards { grid-template-columns: 1fr; }
-      .about-grid { grid-template-columns: 1fr; gap: 18px; }
-      .contact-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .section, .hero, .nav { padding-left: 20px; padding-right: 20px; }
-      :root { --fs-display: 32px; }
+    @media (max-width: 980px) {
+      body {
+        background:
+          radial-gradient(circle at 12px 12px, rgba(72, 62, 52, 0.05) 1px, transparent 1.4px) 0 0 / 24px 24px,
+          repeating-linear-gradient(0deg, transparent 0 31px, var(--paper-line) 31px 32px),
+          var(--paper);
+      }
+      .doodle-field { display: none; }
+      .entry-sticker {
+        bottom: 10px;
+        right: 6px;
+        width: 64px;
+      }
+      .entry-sticker--left {
+        left: 8px;
+        bottom: 12px;
+      }
+      .page {
+        width: calc(100% - 20px);
+        margin: 14px auto 32px;
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+      .sidebar, .hero, .main { grid-column: 1; grid-row: auto; }
+      .sidebar {
+        position: static;
+        min-height: auto;
+        border-right: none;
+        border-bottom: 1.5px dashed rgba(82, 74, 65, 0.2);
+        padding: 18px 16px;
+      }
+      .nav-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px 16px;
+        margin: 10px 0 0;
+        font-size: 18px;
+      }
+      .nav-list li { margin: 0; }
+      .sticky-note { margin-top: 14px; transform: rotate(-1deg); }
+      .hero::after { display: none; }
+      .quote { font-size: 24px; }
+      .journal-entry,
+      .journal-entry:nth-child(even) {
+        max-width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+      }
+      .spread { padding: 20px 14px 28px; }
+      .entry-title { padding-right: 0; }
+      .journal-entry:has(.entry-note) .entry-title { padding-right: 0; }
+      .entry-note {
+        position: relative;
+        top: auto;
+        right: auto;
+        width: auto;
+        max-width: none;
+        text-align: left;
+        margin: 0 0 12px;
+      }
+      .photo-cluster--right {
+        position: relative;
+        top: auto;
+        right: auto;
+        width: auto;
+        margin-top: 16px;
+        align-items: flex-start;
+      }
+      .photo-cluster--right .photo-cap { text-align: left; }
+      #fc:has(.photo-cluster--right) .journal-line,
+      #fc:has(.photo-cluster--right) .tech-scribble,
+      #fc:has(.photo-cluster--right) .entry-link {
+        max-width: none;
+      }
     }
+
     @media (max-width: 520px) {
-      .capmap-grid { grid-template-columns: 1fr; }
-      .contact-grid { grid-template-columns: 1fr; }
+      .page { width: calc(100% - 12px); }
+      .entry-title { font-size: 24px; }
+      .journal-line { font-size: 17px; }
+      .taped-photo img { max-width: 100%; }
     }
   </style>
 </head>
 <body>
-  <nav class="nav">
-    <div class="nav-name">Laraib Butt</div>
-    <div class="nav-links">
-      <a href="#map">Map</a>
-      <a href="#projects">Projects</a>
-      <a href="#about">About</a>
-      <a class="accent-link" href="https://github.com/laraib-b" target="_blank" rel="noopener noreferrer">GitHub &#8599;</a>
-    </div>
-  </nav>
+  <div class="doodle-field" aria-hidden="true">
+    <svg class="d1" viewBox="0 0 40 40"><circle cx="20" cy="20" r="8" fill="none" stroke="currentColor" stroke-width="2"/><path d="M20 4v4M20 32v4M4 20h4M32 20h4" stroke="currentColor" stroke-width="1.5"/></svg>
+    <svg class="d2" viewBox="0 0 36 36"><path d="M8 28 L18 8 L28 28 Z" fill="none" stroke="currentColor" stroke-width="2"/><text x="14" y="24" font-size="10" fill="currentColor">☆</text></svg>
+    <svg class="d3" viewBox="0 0 48 40"><rect x="10" y="14" width="28" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 14 V8 h16 v6" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+    <svg class="d4" viewBox="0 0 32 32"><circle cx="16" cy="16" r="10" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M11 18 q5 6 10 0" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+    <svg class="d5" viewBox="0 0 38 38"><path d="M19 4 C12 12 8 20 19 34 C30 20 26 12 19 4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+  </div>
 
-  <!-- HERO -->
-  <header class="hero">
-    <div class="hero-inner">
-      <p class="eyebrow">Data Science &middot; Engineering &middot; Hardware</p>
-      <h1 class="title">I build intelligent systems across<br>software, hardware, and <span class="accent-word">data</span>.</h1>
-      <p>
-        My work does not fit in one box. I combine machine learning, full stack engineering,
-        automation, and physical computing to build complete systems that solve real problems.
-      </p>
-      <div class="hero-meta">
-        <span>Based in Rawalpindi / Islamabad, Pakistan</span>
-      </div>
-    </div>
-  </header>
+  <svg width="0" height="0" aria-hidden="true">
+    <filter id="roughen">
+      <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="1" seed="7" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="0.4"/>
+    </filter>
+    <marker id="sketch-tip" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto">
+      <path d="M0.5,0.5 L6,3.5 L0.5,6.5" fill="none" stroke="#524c44" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </svg>
 
-  <!-- CAPABILITY MAP (FILTERS) -->
-  <section class="section" id="map">
-    <p class="eyebrow">Skill Map</p>
-    <h2 class="title">Choose a <span class="accent-word">skill</span>, see its projects below.</h2>
-    <p class="field-text" style="max-width:560px;margin:12px 0 22px;">
-      My work spans four domains that overlap constantly. Choose any one to highlight every project that
-      draws on it across the map below.
-    </p>
-
-    <div class="capmap-grid">
-      <div class="cluster">
-        <h3 class="cluster-head" data-domain="ml cv data"><span class="glyph">&#129504;</span> Intelligent Systems</h3>
-        <div class="chip-list">
-          <button class="chip" data-domain="ml">Machine Learning</button>
-          <button class="chip" data-domain="cv">Computer Vision</button>
-          <button class="chip" data-domain="data">Data Science</button>
-        </div>
-      </div>
-      <div class="cluster">
-        <h3 class="cluster-head" data-domain="frontend backend database api"><span class="glyph">&#9881;</span> Product Engineering</h3>
-        <div class="chip-list">
-          <button class="chip" data-domain="frontend">Frontend</button>
-          <button class="chip" data-domain="backend">Backend</button>
-          <button class="chip" data-domain="database">Databases</button>
-          <button class="chip" data-domain="api">APIs</button>
-        </div>
-      </div>
-      <div class="cluster">
-        <h3 class="cluster-head" data-domain="robotics sensors embedded"><span class="glyph">&#129302;</span> Physical Computing</h3>
-        <div class="chip-list">
-          <button class="chip" data-domain="robotics">Robotics</button>
-          <button class="chip" data-domain="sensors">Sensors</button>
-          <button class="chip" data-domain="embedded">Embedded Systems</button>
-        </div>
-      </div>
-      <div class="cluster">
-        <h3 class="cluster-head" data-domain="workflow extension scripting"><span class="glyph">&#128257;</span> Automation</h3>
-        <div class="chip-list">
-          <button class="chip" data-domain="workflow">Workflow Automation</button>
-          <button class="chip" data-domain="extension">Browser Extensions</button>
-          <button class="chip" data-domain="scripting">Scripting</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="filter-bar">
-      <button class="reset-chip" id="reset-filter">All projects</button>
-      <span id="filter-status">Showing all projects &middot; hover a node to trace its connections</span>
-    </div>
-  </section>
-
-  <!-- CONSTELLATION -->
-  <section class="section" id="ecosystem">
-    <p class="eyebrow">Project Ecosystem</p>
-    <h2 class="title">Projects are the <span class="accent-word">nodes</span>. Skills are the connections.</h2>
-    <p class="field-text" style="max-width:560px;margin:12px 0 20px;">
-      Hover any project to trace the technologies it shares with others. Shared skills are what tie the whole system together.
-    </p>
-
-    <div class="constellation-wrap">
-      <svg class="constellation" viewBox="0 0 1000 600" role="img" aria-label="Network map of projects connected to the skills they share">
-        <g id="links"></g>
-        <g id="nodes"></g>
+  <main class="page">
+    <aside class="sidebar">
+      <h1 class="brand">laraib<br>butt</h1>
+      <p class="journal-label">ai/ml engineer, builder,<br>and problem solver.</p>
+      <svg class="cat" viewBox="0 0 120 90" aria-hidden="true">
+        <path d="M20 65 Q25 20 55 45 Q80 15 92 62 Q70 78 42 72 Z" fill="none" stroke="currentColor" stroke-width="3"/>
+        <path d="M48 52h1M69 52h1M54 64q9 7 18 0" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
       </svg>
-    </div>
-    <div class="legend">
-      <span><span class="swatch sw-project"></span>Project</span>
-      <span><span class="swatch sw-skill"></span>Skill / Technology</span>
-    </div>
-  </section>
-
-  <!-- CASE STUDIES -->
-  <section class="section" id="projects">
-    <p class="eyebrow">Project Descriptions</p>
-    <h2 class="title">Each project is a <span class="accent-word">complete system</span>.</h2>
-
-    <div class="cards" style="margin-top:22px;">
-
-      <!-- AI Email Sorter (n8n) -->
-      <article class="card" data-key="nsort" data-domains="workflow ml api">
-        <div class="card-top">
-          <span class="card-num">01</span>
-        </div>
-        <h3 class="title">AI Email Sorter</h3>
-        <div class="field">
-          <p class="field-label">Problem</p>
-          <p class="field-text">Many of my important emails used to get buried in the Gmail inbox. Searching and sorting them manually was a hassle especially if some important email made its way to spam and I never check it.</p>
-        </div>
-        <div class="field">
-          <p class="field-label">Built</p>
-          <p class="field-text">An n8n automation that reads incoming Gmail messages, classifies each one by category (defined by me) with an OpenAI chat model, and forwards it to the matching Discord channel within a single server using webhooks.</p>
-        </div>
-        <div class="field">
-          <p class="field-label">Architecture</p>
-          <div class="flow">
-            <span class="flow-step">Gmail trigger (new email)</span><span class="flow-arrow">&#8595;</span>
-            <span class="flow-step">Text Classifier (OpenAI chat model)</span><span class="flow-arrow">&#8595;</span>
-            <span class="flow-step">Routed into category branches</span><span class="flow-arrow">&#8595;</span>
-            <span class="flow-step">Per-category Discord channels (webhooks)</span>
-          </div>
-        </div>
-        <div class="field">
-          <p class="field-label">Skills demonstrated</p>
-          <div class="tags">
-            <span class="tag">AI</span><span class="tag">Automation</span><span class="tag">Workflow</span><span class="tag">APIs</span>
-          </div>
-        </div>
-        <div class="field">
-          <p class="field-label">Technologies</p>
-          <div class="stack">
-            <span class="stack-tag">n8n</span><span class="stack-tag">OpenAI API</span><span class="stack-tag">Gmail API</span><span class="stack-tag">Discord API</span>
-          </div>
-        </div>
-        <div class="card-foot">
-          <button class="thumb" type="button" data-full="assets/email-sorter-workflow.png" data-caption="n8n workflow &mdash; Gmail trigger into an OpenAI text classifier that routes to category Discord channels" aria-label="Enlarge the n8n workflow diagram">
-            <img src="assets/email-sorter-workflow.png" alt="n8n workflow: Gmail trigger feeding an OpenAI-powered text classifier that fans out to many Discord channels" loading="lazy">
-          </button>
-          <button class="thumb" type="button" data-full="assets/email-sorter-discord.png" data-caption="Discord server &mdash; category channels receiving auto-sorted emails" aria-label="Enlarge the Discord channels screenshot">
-            <img src="assets/email-sorter-discord.png" alt="Discord server showing category channels like jobs, coursera, codes, and bills receiving sorted emails" loading="lazy">
-          </button>
-        </div>
-      </article>
-
-      <!-- Hamara Kisaan -->
-      <article class="card" data-key="hk" data-domains="ml cv data frontend backend database api">
-        <div class="card-top">
-          <span class="card-num">02</span>
-        </div>
-        <h3 class="title">Hamara Kisaan</h3>
-        <div class="field">
-          <p class="field-label">Problem</p>
-          <p class="field-text">Urdu-speaking farmers lack accessible tools to catch crop diseases early or get timely, localized advisories.</p>
-        </div>
-        <div class="field">
-          <p class="field-label">Built</p>
-          <p class="field-text">A full stack, Urdu-first agriculture platform with image-based crop disease detection, live weather data, and an advisory dashboard.</p>
-        </div>
-        <div class="field">
-          <p class="field-label">Architecture</p>
-          <div class="flow">
-            <span class="flow-step">User</span><span class="flow-arrow">&#8595;</span>
-            <span class="flow-step">React frontend</span><span class="flow-arrow">&#8595;</span>
-            <span class="flow-step">Flask API</span><span class="flow-arrow">&#8595;</span>
-            <span class="flow-step">TensorFlow model</span><span class="flow-arrow">&#8595;</span>
-            <span class="flow-step">Disease prediction + advisory</span>
-          </div>
-        </div>
-        <div class="field">
-          <p class="field-label">Skills demonstrated</p>
-          <div class="tags">
-            <span class="tag">AI/ML</span><span class="tag">Computer Vision</span><span class="tag">Full Stack</span><span class="tag">Data</span>
-          </div>
-        </div>
-        <div class="field">
-          <p class="field-label">Technologies</p>
-          <div class="stack">
-            <span class="stack-tag">React</span><span class="stack-tag">Flask</span><span class="stack-tag">MySQL</span><span class="stack-tag">TensorFlow</span><span class="stack-tag">Weather APIs</span>
-          </div>
-        </div>
-        <div class="card-foot">
-          <!-- TODO: add Hamara Kisaan screenshot -->
-          <a class="link-chip" href="https://github.com/laraib-b/Hamara-Kisaan" target="_blank" rel="noopener noreferrer"><svg class="gh-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
-          <span class="link-chip todo">In progress &middot; ~50%</span>
-          <span class="img-slot">Image slot</span>
-        </div>
-      </article>
-
-      <!-- Self-Driving Car -->
-      <article class="card" data-key="sd" data-domains="robotics embedded sensors cv ml scripting">
-        <div class="card-top">
-          <span class="card-num">03</span>
-        </div>
-        <h3 class="title">Self-Driving Traffic-Aware Car</h3>
-        <div class="field">
-          <p class="field-label">Requirement</p>
-          <p class="field-text">A low-cost vehicle needs to navigate autonomously while reacting to obstacles and traffic lights.</p>
-        </div>
-        <div class="field">
-          <p class="field-label">Built</p>
-          <p class="field-text">An autonomous RC car with autopilot, obstacle avoidance, and traffic light detection using computer vision and sensor fusion.</p>
-        </div>
-        <div class="field">
-          <p class="field-label">Architecture</p>
-          <div class="flow">
-            <span class="flow-step">ESPCam + ultrasonic sensors</span><span class="flow-arrow">&#8595;</span>
-            <span class="flow-step">MQTT stream</span><span class="flow-arrow">&#8595;</span>
-            <span class="flow-step">Vision + control logic</span><span class="flow-arrow">&#8595;</span>
-            <span class="flow-step">Motor actuation</span>
-          </div>
-        </div>
-        <div class="field">
-          <p class="field-label">Skills demonstrated</p>
-          <div class="tags">
-            <span class="tag">Robotics</span><span class="tag">Embedded</span><span class="tag">Sensors</span><span class="tag">Computer Vision</span>
-          </div>
-        </div>
-        <div class="field">
-          <p class="field-label">Technologies</p>
-          <div class="stack">
-            <span class="stack-tag">Python</span><span class="stack-tag">Arduino C</span><span class="stack-tag">ESP32</span><span class="stack-tag">ESPCam</span><span class="stack-tag">MQTT</span>
-          </div>
-        </div>
-        <div class="card-foot">
-          <button class="thumb" type="button" data-full="assets/self-driving-car.png" data-caption="Self-driving RC car &mdash; ESP32, ultrasonic sensors, and ESPCam" aria-label="Enlarge image of the self-driving car">
-            <img src="assets/self-driving-car.png" alt="Self-driving RC car built with ESP32, ultrasonic sensors, and wiring" loading="lazy">
-          </button>
-        </div>
-      </article>
-
-      <!-- RideFlow -->
-      <article class="card" data-key="rf" data-domains="backend database api">
-        <div class="card-top">
-          <span class="card-num">04</span>
-        </div>
-        <h3 class="title">RideFlow</h3>
-        <div class="field">
-          <p class="field-label">Requirement</p>
-          <p class="field-text">Ride-hailing needs reliable fare logic, driver matching, payments, and strict role-based control.</p>
-        </div>
-        <div class="field">
-          <p class="field-label">Built</p>
-          <p class="field-text">REST APIs for fare calculation, driver matching, payments, and admin reporting, backed by stored procedures, triggers, views, and RBAC.</p>
-        </div>
-        <div class="field">
-          <p class="field-label">Architecture</p>
-          <div class="flow">
-            <span class="flow-step">Client</span><span class="flow-arrow">&#8595;</span>
-            <span class="flow-step">Node / Express REST API</span><span class="flow-arrow">&#8595;</span>
-            <span class="flow-step">MySQL (procedures, triggers, views)</span><span class="flow-arrow">&#8595;</span>
-            <span class="flow-step">Role-based response</span>
-          </div>
-        </div>
-        <div class="field">
-          <p class="field-label">Skills demonstrated</p>
-          <div class="tags">
-            <span class="tag">Backend</span><span class="tag">Databases</span><span class="tag">APIs</span>
-          </div>
-        </div>
-        <div class="field">
-          <p class="field-label">Technologies</p>
-          <div class="stack">
-            <span class="stack-tag">Node.js</span><span class="stack-tag">Express</span><span class="stack-tag">MySQL</span>
-          </div>
-        </div>
-        <div class="card-foot">
-          <!-- TODO: add RideFlow screenshot -->
-          <a class="link-chip" href="https://github.com/laraib-b/RideFlow" target="_blank" rel="noopener noreferrer"><svg class="gh-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
-          <span class="img-slot">Image slot</span>
-        </div>
-      </article>
-
-      <!-- InstaHealth -->
-      <article class="card" data-key="ih" data-domains="data backend database">
-        <div class="card-top">
-          <span class="card-num">05</span>
-        </div>
-        <h3 class="title">InstaHealth Dashboard</h3>
-        <div class="field">
-          <p class="field-label">Requirement</p>
-          <p class="field-text">Raw Instagram usage data is hard to interpret without interactive exploration and querying.</p>
-        </div>
-        <div class="field">
-          <p class="field-label">Built</p>
-          <p class="field-text">An analytics dashboard with interactive charts, live SQL execution, and user filtering, supported by exploratory data analysis.</p>
-        </div>
-        <div class="field">
-          <p class="field-label">Architecture</p>
-          <div class="flow">
-            <span class="flow-step">Usage data</span><span class="flow-arrow">&#8595;</span>
-            <span class="flow-step">Flask backend</span><span class="flow-arrow">&#8595;</span>
-            <span class="flow-step">MySQL queries</span><span class="flow-arrow">&#8595;</span>
-            <span class="flow-step">Interactive charts + insights</span>
-          </div>
-        </div>
-        <div class="field">
-          <p class="field-label">Skills demonstrated</p>
-          <div class="tags">
-            <span class="tag">Data</span><span class="tag">Backend</span>
-          </div>
-        </div>
-        <div class="field">
-          <p class="field-label">Technologies</p>
-          <div class="stack">
-            <span class="stack-tag">Flask</span><span class="stack-tag">MySQL</span><span class="stack-tag">EDA</span><span class="stack-tag">Data Visualization</span>
-          </div>
-        </div>
-        <div class="card-foot">
-          <!-- TODO: add InstaHealth screenshot -->
-          <span class="img-slot">Image slot</span>
-        </div>
-      </article>
-
-      <!-- Bulk Downloader -->
-      <article class="card" data-key="bd" data-domains="extension scripting workflow frontend">
-        <div class="card-top">
-          <span class="card-num">06</span>
-        </div>
-        <h3 class="title">Classroom Bulk Downloader</h3>
-        <div class="field">
-          <p class="field-label">Problem</p>
-          <p class="field-text">Downloading Google Classroom files one at a time is slow and repetitive.</p>
-        </div>
-        <div class="field">
-          <p class="field-label">Built</p>
-          <p class="field-text">A Chrome extension that batch-downloads all Classroom files in one action using DOM manipulation and browser scripting.</p>
-        </div>
-        <div class="field">
-          <p class="field-label">Architecture</p>
-          <div class="flow">
-            <span class="flow-step">Classroom page</span><span class="flow-arrow">&#8595;</span>
-            <span class="flow-step">Content script (DOM scan)</span><span class="flow-arrow">&#8595;</span>
-            <span class="flow-step">Collect file links</span><span class="flow-arrow">&#8595;</span>
-            <span class="flow-step">Batch download</span>
-          </div>
-        </div>
-        <div class="field">
-          <p class="field-label">Skills demonstrated</p>
-          <div class="tags">
-            <span class="tag">Automation</span><span class="tag">Browser Extension</span><span class="tag">Scripting</span>
-          </div>
-        </div>
-        <div class="field">
-          <p class="field-label">Technologies</p>
-          <div class="stack">
-            <span class="stack-tag">HTML</span><span class="stack-tag">CSS</span><span class="stack-tag">JavaScript</span><span class="stack-tag">Chrome API</span>
-          </div>
-        </div>
-        <div class="card-foot">
-          <!-- TODO: add Bulk Downloader screenshot -->
-          <a class="link-chip" href="https://github.com/laraib-b/Bulk-File-Downloader-for-Google-Classroom" target="_blank" rel="noopener noreferrer"><svg class="gh-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
-          <span class="img-slot">Image slot</span>
-        </div>
-      </article>
-
-      <!-- FAST Cafe -->
-      <article class="card" data-key="fc" data-domains="frontend">
-        <div class="card-top">
-          <span class="card-num">07</span>
-        </div>
-        <h3 class="title">FAST Caf&eacute; Website</h3>
-        <div class="field">
-          <p class="field-label">Problem</p>
-          <p class="field-text">Campus dining had no easy, remotely accessible way to browse and order food.</p>
-        </div>
-        <div class="field">
-          <p class="field-label">Built</p>
-          <p class="field-text">A responsive food-ordering interface focused on a clean browsing and ordering flow.</p>
-        </div>
-        <div class="field">
-          <p class="field-label">Architecture</p>
-          <div class="flow">
-            <span class="flow-step">User</span><span class="flow-arrow">&#8595;</span>
-            <span class="flow-step">Responsive UI (HTML/CSS/JS)</span><span class="flow-arrow">&#8595;</span>
-            <span class="flow-step">Order flow</span>
-          </div>
-        </div>
-        <div class="field">
-          <p class="field-label">Skills demonstrated</p>
-          <div class="tags">
-            <span class="tag">Frontend</span>
-          </div>
-        </div>
-        <div class="field">
-          <p class="field-label">Technologies</p>
-          <div class="stack">
-            <span class="stack-tag">HTML</span><span class="stack-tag">CSS</span><span class="stack-tag">JavaScript</span><span class="stack-tag">Responsive Design</span>
-          </div>
-        </div>
-        <div class="card-foot">
-          <a class="link-chip" href="https://github.com/laraib-b/Campus-Cafe-Website" target="_blank" rel="noopener noreferrer"><svg class="gh-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
-          <button class="thumb" type="button" data-full="assets/fast-cafe.png" data-caption="FAST Cafe &mdash; Cafe Red, Cafe Blue, and Dough with the Flow menus" aria-label="Enlarge screenshot of the FAST Cafe website">
-            <img src="assets/fast-cafe.png" alt="FAST Cafe website showing Cafe Red, Cafe Blue, and Dough with the Flow menus" loading="lazy">
-          </button>
-        </div>
-      </article>
-
-    </div>
-  </section>
-
-  <!-- ABOUT -->
-  <section class="section" id="about">
-    <div class="about-grid">
-      <p class="eyebrow" style="margin:0;">About</p>
-      <p class="about-text">
-        I am a second year <strong>Data Science</strong> student at FAST National University with a strong
-        foundation in <strong>Python, JS and SQL</strong>. I work comfortably across <strong>machine
-        learning, full stack development, automation, and robotics.</strong>  Alongside building, I have mentored 80+ students
-        as a programming <strong>teaching assistant</strong> and led technical and creative work for university events.
-      </p>
-    </div>
-  </section>
-
-  <!-- CONTACT -->
-  <section class="section" id="contact">
-    <p class="eyebrow">Contact</p>
-    <h2 class="title">Let's build something <span class="accent-word">together</span>.</h2>
-    <div class="contact-grid">
-      <div class="contact-item">
-        <p class="field-label">Email</p>
-        <p class="contact-value"><a href="mailto:laraibbb.work@gmail.com">laraibbb.work@gmail.com</a></p>
+      <ul class="nav-list">
+        <li><a href="#about">p.1 — who am i</a></li>
+        <li><a href="#map">p.2 — skills and project map</a></li>
+        <li><a href="#projects">p.3 — build log</a></li>
+        <li><a href="#contact">p.4 — contact me</a></li>
+      </ul>
+      <div class="sticky-note">
+        Currently:<br>
+        building useful systems with code, data, APIs, and hardware.
       </div>
-      <div class="contact-item">
-        <p class="field-label">GitHub</p>
-        <p class="contact-value"><a href="https://github.com/laraib-b" target="_blank" rel="noopener noreferrer">github.com/laraib-b</a></p>
-      </div>
-      <div class="contact-item">
-        <p class="field-label">LinkedIn</p>
-        <p class="contact-value"><a href="https://linkedin.com/in/laraib-butt-9a6a18325" target="_blank" rel="noopener noreferrer">laraib-butt</a></p>
-      </div>
-      <div class="contact-item">
-        <p class="field-label">Location</p>
-        <p class="contact-value">Rawalpindi, Pakistan</p>
-      </div>
-    </div>
-    <p class="footer-note">Designed and built by Laraib Butt.</p>
-  </section>
+    </aside>
 
-  <!-- Lightbox overlay -->
-  <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Image preview">
-    <button class="lightbox-close" type="button" aria-label="Close image preview">&times;</button>
+    <header class="hero">
+      <span class="wear-fold" aria-hidden="true"></span>
+      <p class="quote"><span class="mark">“</span>I build intelligent systems across software, hardware, and data.<span class="mark">”</span></p>
+      <p class="meta">personal + academic projects portfolio</p>
+      <span class="erased-ghost" aria-hidden="true">todo: organize this notebook someday</span>
+    </header>
+
+    <div class="main">
+      <section class="spread about" id="about">
+        <span class="wear-stain" style="bottom:8px;left:-12px" aria-hidden="true"></span>
+        <span class="margin-note margin-note--right"> thought i'd have it all figured out by now</span>
+        <h2 class="section-title reveal-title">
+          who am i
+          <svg class="underline-draw" viewBox="0 0 120 8" preserveAspectRatio="none"><path d="M2 5 Q30 2 60 5 T118 4"/></svg>
+        </h2>
+        <p>Second-year Data Science student at FAST. I fill this notebook with ML experiments, full-stack builds, automation hacks, and robotics prototypes.</p>
+      </section>
+
+      <section class="spread map-wrap" id="map">
+        <span class="wear-smudge" style="bottom:42px;right:8%;--smudge-tilt:-18deg" aria-hidden="true"></span>
+        <span class="margin-note margin-note--right">my brain on paper</span>
+        <h2 class="section-title reveal-title">
+          skills and project map
+          <svg class="underline-draw" viewBox="0 0 160 8" preserveAspectRatio="none"><path d="M2 5 Q50 1 90 5 T158 3"/></svg>
+        </h2>
+        <p class="section-copy"><br>A map for my skills and projects. Tap a ☆ to jump to that project entry.</p>
+
+        <svg class="map-svg" viewBox="0 0 1000 600" role="img" aria-label="Skills and project map">
+          <g id="map-links"></g>
+          <g id="map-nodes"></g>
+        </svg>
+
+        <p class="legend">☆ projects <br> ○ skills <br> wavy lines = connections?</p>
+      </section>
+
+      <section class="journal-entries" id="projects">
+        <article class="journal-entry reveal-entry" id="nsort">
+          <p class="entry-meta">entry #07 · june · summer 2026</p>
+          <h3 class="entry-title">AI Email Sorter (n8n)</h3>
+          <p class="entry-note">this is something  i really needed</p>
+          <p class="journal-line"><span class="lbl">why →</span> My inbox was chaos. Important emails kept getting buried under newsletters and spam.</p>
+          <p class="journal-line"><span class="lbl">problem →</span> Manual searching and sorting every time was eating my time</p>
+          <p class="journal-line"><span class="lbl">solution →</span> Classifying and organzing the emails with somehow</p>
+          <p class="journal-line"><span class="lbl">build →</span> n8n workflow that reads Gmail, classifies with OpenAI, forwards to categorized Discord channels.</p>
+          <p class="journal-line"><span class="lbl">learned →</span> Automation through n8n - triggers, API keys and flows</p>
+          
+          <svg class="arch-sketch arch-sketch--tree arch-sketch--text" viewBox="0 0 520 58" aria-hidden="true" style="--sketch-tilt:-1.5deg">
+            <g class="sketch-arrows">
+              <path class="sketch-arrow" d="M 72,50 Q 86,47 104,51"/>
+              <path class="sketch-arrow" d="M 172,49 Q 188,52 207,50"/>
+              <path class="sketch-arrow" d="M 287,51 Q 304,48 322,50"/>
+              <path class="sketch-arrow" d="M 132,22 Q 136,30 132,40"/>
+            </g>
+            <text class="sketch-label sketch-label--node" x="42" y="50" transform="rotate(-1.1 42 50)">Gmail</text>
+            <text class="sketch-label sketch-label--node" x="132" y="50" transform="rotate(0.8 132 50)">Classifier</text>
+            <text class="sketch-label sketch-label--node" x="242" y="50" transform="rotate(-0.6 242 50)">Branches</text>
+            <text class="sketch-label sketch-label--node" x="395" y="50" transform="rotate(1 395 50)">Discord channels</text>
+            <text class="sketch-label sketch-label--node" x="132" y="10" transform="rotate(1.3 132 18)">OpenAI</text>
+          </svg>
+          
+          <div class="photo-cluster">
+            <figure>
+              <button class="taped-photo" style="--photo-tilt:-3deg" data-full="assets/email-sorter-workflow.png" data-caption="the workflow — took 3 tries to get routing right">
+                <img src="assets/email-sorter-workflow.png" alt="n8n workflow" loading="lazy" decoding="async">
+              </button>
+              <figcaption class="photo-cap">workflow (screenshot)</figcaption>
+            </figure>
+            <figure>
+              <button class="taped-photo" style="--photo-tilt:2deg" data-full="assets/email-sorter-discord.png" data-caption="emails landing in the right Discord channels">
+                <img src="assets/email-sorter-discord.png" alt="Discord channels" loading="lazy" decoding="async">
+              </button>
+              <figcaption class="photo-cap">it actually worked xd !!</figcaption>
+            </figure>
+          </div>
+        </article>
+
+        <article class="journal-entry reveal-entry" id="sd">
+          <p class="entry-meta">entry #03 · semester 3 · fall 2025 · my first hardware project</p>
+          <h3 class="entry-title">Self-Driving Traffic-Aware Car</h3>
+          <p class="entry-note">super tiring project but worth it</p>
+          <p class="journal-line"><span class="lbl">requirement →</span> Build a low-cost RC car that avoids obstacles and responds to traffic lights.</p>
+          <p class="journal-line"><span class="lbl">challenge →</span> Futile sensors, MQTT set up, ESPCam low quality vision and hardware debugging. Light detection in different lighting was painful.</p>
+          <p class="journal-line"><span class="lbl">learned →</span> Image processing with OpenCV, microcontrollers, Arduino C programming, hardware debugging.</p>
+          <p class="journal-line"><span class="lbl">build →</span> RC car + ultrasonic sensors + ESP32 + ESP-CAM + MQTT broker + OpenCV traffic-light logic.</p>
+          <svg class="arch-sketch arch-sketch--tree arch-sketch--text" viewBox="0 0 665 58" aria-hidden="true" style="--sketch-tilt:-0.9deg">
+            <g class="sketch-arrows">
+              <path class="sketch-arrow" d="M 108,50 Q 122,47 140,51"/>
+              <path class="sketch-arrow" d="M 208,49 Q 225,52 244,50"/>
+              <path class="sketch-arrow" d="M 313,51 Q 329,48 348,50"/>
+              <path class="sketch-arrow" d="M 418,49 Q 435,52 453,50"/>
+              <path class="sketch-arrow" d="M 523,50 Q 538,47 553,51"/>
+              <path class="sketch-arrow" d="M 488,22 Q 492,30 490,40"/>
+            </g>
+            <text class="sketch-label sketch-label--node" x="70" y="50" transform="rotate(-1.2 70 50)">light input</text>
+            <text class="sketch-label sketch-label--node" x="175" y="50" transform="rotate(0.9 175 50)">ESP cam</text>
+            <text class="sketch-label sketch-label--node" x="280" y="50" transform="rotate(-0.7 280 50)">mqtt</text>
+            <text class="sketch-label sketch-label--node" x="385" y="50" transform="rotate(1.1 385 50)">OpenCV</text>
+            <text class="sketch-label sketch-label--node" x="490" y="50" transform="rotate(-0.6 490 50)">ESP32</text>
+            <text class="sketch-label sketch-label--node" x="595" y="50" transform="rotate(0.8 595 50)">car reacts</text>
+            <text class="sketch-label sketch-label--node" x="490" y="10" transform="rotate(1.4 490 18)">ultrasonic</text>
+          </svg>
+        
+          <div class="photo-cluster">
+            <figure>
+              <button class="taped-photo" data-full="assets/self-driving-car.png" data-caption="the car — duct tape is a valid engineering material">
+                <img src="assets/self-driving-car.png" alt="Self-driving RC car" loading="lazy" decoding="async">
+              </button>
+              <figcaption class="photo-cap">surprisingly worked (mostly)</figcaption>
+            </figure>
+          </div>
+          <img class="entry-sticker" src="assets/doodles/star.png" alt="" aria-hidden="true" loading="lazy" decoding="async">
+        </article>
+
+        <article class="journal-entry reveal-entry" id="hk">
+          <span class="wear-smudge" style="top:12px;right:18px;--smudge-tilt:8deg;width:48px;height:20px" aria-hidden="true"></span>
+          <p class="entry-meta">entry #06 · semester 4 · spring 2026 · probably my most meaningful project</p>
+          <h3 class="entry-title">Hamara Kisaan (app + web)</h3>
+          <p class="entry-note">very proud of this one</p>
+          <p class="journal-line"><span class="lbl">why →</span> Farmers in Pakistan rely on govt SMS system to get updates about weather, crop info etc with no system based on WiFi or internet</p>
+          <p class="journal-line"><span class="lbl">problem →</span> Crops disease detection, weather updates and advisories, relevant news and information isn't accessible to them</p>
+          <p class="journal-line"><span class="lbl">build →</span> Urdu-first agriculture platform: TensorFlow disease detection, weather API, news API, Flask backend, React frontend. App portal for farmers, web portal for admins</p>
+          <p class="journal-line"><span class="lbl">challenge →</span> Training a TensorFlow model on limited local data. Limited APIs available for Pakistan relevant news, weather and crop info. SMS integration within app.</p>
+          <p class="journal-line"><span class="lbl">learned →</span> First full-stack project - learnt APIs, React, TensorFlow, Flask server and so much more.</p>
+          
+          <div class="tech-scribble"><span>TensorFlow</span><span>Flask</span><span>React</span><span>MySQL</span></div>
+          <a class="entry-link" href="https://github.com/laraib-b/Hamara-Kisaan" target="_blank" rel="noopener noreferrer">→ github repo</a>
+        </article>
+
+        <article class="journal-entry reveal-entry" id="bd">
+          <p class="entry-meta">entry #02 · spring 2025 </p>
+          <h3 class="entry-title">Classroom Bulk Downloader (extension)</h3>
+          <p class="entry-note">VERY happy with this one -- why doesn't Google do this</p>
+          <p class="journal-line"><span class="lbl">why →</span> Downloading Classroom files one-by-one through tabs was tests my patience.</p>
+          <p class="journal-line"><span class="lbl">problem →</span> Batch download assignments across multiple Classroom tabs without clicking 50 times.</p>
+          <p class="journal-line"><span class="lbl">build →</span> Chrome extension: scans DOM, batch-downloads SELECTED Classroom files.</p>
+          <p class="journal-line"><span class="lbl">challenge →</span> DOM scanning across dynamic Google pages. Chrome extension permissions.</p>
+          
+          <div class="tech-scribble"><span>Chrome API</span><span>JavaScript</span><span>DOM scripting</span></div>
+          <a class="entry-link" href="https://github.com/laraib-b/Bulk-File-Downloader-for-Google-Classroom" target="_blank" rel="noopener noreferrer">→ github repo</a>
+        </article>
+
+        <article class="journal-entry reveal-entry" id="rf">
+          <p class="entry-meta">entry #05 · semester 4 · spring 2026 · database project</p>
+          <h3 class="entry-title">RideFlow (web)</h3>
+          <p class="journal-line"><span class="lbl">requirement →</span> Ride-hailing app with rider + driver + admin portal, fare calculation, city matching, payments, admin control, vehicle verification, driver & rider review system and reports.</p>
+          <p class="journal-line"><span class="lbl">build →</span> Node/Express REST API + normalized MySQL with procedures, triggers, views, RBAC + cloud DB</p>
+          <div class="tech-scribble"><span>Node.js</span><span>REST API</span><span>MySQL Cloud</span></div>
+          <a class="entry-link" href="https://github.com/laraib-b/RideFlow" target="_blank" rel="noopener noreferrer">→ github repo</a>
+        </article>
+
+        <article class="journal-entry reveal-entry" id="ih">
+          <p class="entry-meta">entry #04 · winter 2025 · data &amp; analytics</p>
+          <h3 class="entry-title">InstaHealth Dashboard</h3>
+          <p class="journal-line"><span class="lbl">why →</span> Was curious how to visualize data analytics using sql, python and front end.</p>
+          <p class="journal-line"><span class="lbl">build →</span> Flask/MySQL analytics dashboard with charts, SQL execution, filtering, EDA views.</p>
+          <p class="journal-line"><span class="lbl">data →</span> Took raw Instagram Usage Data (unormalized) and built DB in SQL.</p>
+          <p class="journal-line"><span class="lbl">EDA →</span> Built EDA views in python and then used them to build a dashboard in flask.</p>
+          
+          <div class="tech-scribble"><span>Flask</span><span>MySQL</span><span>EDA</span><span>charts</span></div>
+          <img class="entry-sticker entry-sticker--left" src="assets/doodles/star.png" alt="" aria-hidden="true" loading="lazy" decoding="async">
+        </article>
+
+        <article class="journal-entry reveal-entry" id="fc">
+          <p class="entry-meta">entry #01 · semester 1 · fall 2024</p>
+          <h3 class="entry-title">FAST Cafe Website</h3>
+          <p class="entry-note">learned responsive layout here</p>
+          <div class="photo-cluster photo-cluster--right">
+            <figure>
+              <button class="taped-photo" style="--photo-tilt:1.5deg" data-full="assets/fast-cafe.png" data-caption="menu UI — simple but it worked">
+                <img src="assets/fast-cafe.png" alt="FAST Cafe website" loading="lazy" decoding="async">
+              </button>
+              <figcaption class="photo-cap">pasted screenshot ↑</figcaption>
+            </figure>
+          </div>
+          <p class="journal-line"><span class="lbl">problem →</span> Campus cafe has no digital menu. Long queues for food + weak WiFi in cafe made it even worse</p>
+          <p class="journal-line"><span class="lbl">build →</span> Responsive menu and ordering interface for campus cafe. Made it easy to browse and order food remotely inside campus using student / teacher account.</p>
+          <div class="tech-scribble"><span>HTML</span><span>CSS</span><span>JavaScript</span></div>
+          <a class="entry-link" href="https://github.com/laraib-b/Campus-Cafe-Website" target="_blank" rel="noopener noreferrer">→ github repo</a>
+        </article>
+      </section>
+
+      <p class="page-scribble">— end of build log — flip back to the map anytime —</p>
+
+      <section class="spread contact" id="contact">
+        <span class="wear-fold" aria-hidden="true"></span>
+        <span class="wear-smudge" style="bottom:24px;left:12%;--smudge-tilt:-8deg" aria-hidden="true"></span>
+        <span class="margin-note margin-note--right">say hi :)</span>
+        <h2 class="section-title reveal-title">
+          say hi
+          <svg class="underline-draw" viewBox="0 0 80 8" preserveAspectRatio="none"><path d="M2 4 Q25 6 50 4 T78 5"/></svg>
+        </h2>
+        <p>Email: <a href="mailto:laraibbb.work@gmail.com">laraibbb.work@gmail.com</a><br>
+        GitHub: <a href="https://github.com/laraib-b" target="_blank" rel="noopener noreferrer">github.com/laraib-b</a><br>
+        LinkedIn: <a href="https://linkedin.com/in/laraib-butt-9a6a18325" target="_blank" rel="noopener noreferrer">laraib-butt</a></p>
+      </section>
+    </div>
+  </main>
+
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="close" id="close" type="button" aria-label="Close">×</button>
     <figure>
       <img id="lightbox-img" src="" alt="">
       <figcaption id="lightbox-cap"></figcaption>
@@ -827,219 +1155,311 @@
   </div>
 
   <script>
-    (function () {
-      // ---- Constellation data: projects (main nodes) + skills (connections) ----
-      var NODES = {
-        // projects
-        hk: { x: 320, y: 200, label: 'Hamara Kisaan', type: 'project', domains: 'ml cv data frontend backend database api' },
-        sd: { x: 700, y: 150, label: 'Self-Driving Car', type: 'project', domains: 'robotics embedded sensors cv ml scripting' },
-        rf: { x: 470, y: 440, label: 'RideFlow', type: 'project', domains: 'backend database api' },
-        ih: { x: 165, y: 405, label: 'InstaHealth', type: 'project', domains: 'data backend database' },
-        bd: { x: 805, y: 335, label: 'Bulk Downloader', type: 'project', domains: 'extension scripting workflow frontend' },
-        fc: { x: 640, y: 480, label: 'FAST Cafe', type: 'project', domains: 'frontend' },
-        nsort: { x: 300, y: 540, label: 'AI Email Sorter', type: 'project', domains: 'workflow ml api' },
-        // skills
-        tensorflow: { x: 215, y: 95, label: 'TensorFlow', type: 'skill', domains: 'ml' },
-        cvision:    { x: 470, y: 95, label: 'Computer Vision', type: 'skill', domains: 'cv' },
-        react:      { x: 430, y: 295, label: 'React', type: 'skill', domains: 'frontend' },
-        flask:      { x: 150, y: 255, label: 'Flask', type: 'skill', domains: 'backend' },
-        mysql:      { x: 350, y: 370, label: 'MySQL', type: 'skill', domains: 'database' },
-        nodejs:     { x: 565, y: 360, label: 'Node.js', type: 'skill', domains: 'backend' },
-        javascript: { x: 770, y: 470, label: 'JavaScript', type: 'skill', domains: 'frontend' },
-        chromeapi:  { x: 915, y: 300, label: 'Chrome API', type: 'skill', domains: 'extension' },
-        python:     { x: 560, y: 185, label: 'Python', type: 'skill', domains: 'scripting' },
-        esp32:      { x: 880, y: 120, label: 'ESP32', type: 'skill', domains: 'embedded' },
-        mqtt:       { x: 855, y: 215, label: 'MQTT', type: 'skill', domains: 'sensors' },
-        n8n:        { x: 135, y: 500, label: 'n8n', type: 'skill', domains: 'workflow' },
-        openai:     { x: 455, y: 555, label: 'OpenAI', type: 'skill', domains: 'ml' },
-        gmail:      { x: 205, y: 568, label: 'Gmail API', type: 'skill', domains: 'api' },
-        discord:    { x: 565, y: 525, label: 'Discord API', type: 'skill', domains: 'api' }
-      };
-      var LINKS = [
-        ['hk', 'tensorflow'], ['hk', 'cvision'], ['hk', 'react'], ['hk', 'flask'], ['hk', 'mysql'],
-        ['ih', 'flask'], ['ih', 'mysql'],
-        ['rf', 'nodejs'], ['rf', 'mysql'],
-        ['fc', 'javascript'],
-        ['bd', 'javascript'], ['bd', 'chromeapi'],
-        ['sd', 'python'], ['sd', 'esp32'], ['sd', 'mqtt'], ['sd', 'cvision'],
-        ['nsort', 'n8n'], ['nsort', 'openai'], ['nsort', 'gmail'], ['nsort', 'discord']
-      ];
+    var SVGNS = 'http://www.w3.org/2000/svg';
+    var MAP_W = 1000;
+    var MAP_H = 600;
+    var PROJECT_IDS = ['hk', 'sd', 'ih', 'rf', 'nsort', 'bd', 'fc'];
 
-      var SVGNS = 'http://www.w3.org/2000/svg';
-      var linksGroup = document.getElementById('links');
-      var nodesGroup = document.getElementById('nodes');
-      var nodeEls = {};   // key -> <g>
-      var linkEls = [];   // { el, a, b }
-      // adjacency for hover glow
-      var adj = {};
-      Object.keys(NODES).forEach(function (k) { adj[k] = []; });
+    var MAP_META = {
+      hk: { label: 'Hamara Kisaan', type: 'project', jump: 'hk', note: 'probably my most meaningful project' },
+      sd: { label: 'Self-Driving Car', type: 'project', jump: 'sd', note: 'my first robotics project' },
+      rf: { label: 'RideFlow', type: 'project', jump: 'rf',},
+      ih: { label: 'InstaHealth', type: 'project', jump: 'ih' },
+      bd: { label: 'Bulk Downloader', type: 'project', jump: 'bd' },
+      fc: { label: 'FAST Cafe', type: 'project', jump: 'fc' },
+      nsort: { label: 'AI Email Sorter', type: 'project', jump: 'nsort', note: 'first n8n project that actually worked' },
+      tensorflow: { label: 'TensorFlow', type: 'skill' },
+      cvision: { label: 'Computer Vision', type: 'skill' },
+      react: { label: 'React', type: 'skill' },
+      flask: { label: 'Flask', type: 'skill' },
+      mysql: { label: 'MySQL', type: 'skill' },
+      nodejs: { label: 'Node.js', type: 'skill' },
+      javascript: { label: 'JavaScript', type: 'skill' },
+      chromeapi: { label: 'Chrome API', type: 'skill' },
+      python: { label: 'Python', type: 'skill' },
+      esp32: { label: 'ESP32', type: 'skill' },
+      mqtt: { label: 'MQTT', type: 'skill' },
+      n8n: { label: 'n8n', type: 'skill' },
+      openai: { label: 'OpenAI', type: 'skill' },
+      gmail: { label: 'Gmail API', type: 'skill' },
+      discord: { label: 'Discord API', type: 'skill' }
+    };
 
-      function make(tag, attrs) {
-        var el = document.createElementNS(SVGNS, tag);
-        for (var a in attrs) { el.setAttribute(a, attrs[a]); }
-        return el;
+    var MAP_LAYOUT = {
+      hk: { x: 205, y: 235 },
+      sd: { x: 585, y: 178 },
+      ih: { x: 178, y: 415 },
+      rf: { x: 505, y: 400 },
+      nsort: { x: 275, y: 530 },
+      bd: { x: 870, y: 338 },
+      fc: { x: 625, y: 508 },
+      tensorflow: { x: 118, y: 168 },
+      cvision: { x: 345, y: 105 },
+      react: { x: 158, y: 318 },
+      flask: { x: 78, y: 262 },
+      mysql: { x: 435, y: 292 },
+      nodejs: { x: 598, y: 395 },
+      python: { x: 688, y: 128 },
+      esp32: { x: 758, y: 202 },
+      mqtt: { x: 708, y: 268 },
+      n8n: { x: 168, y: 528 },
+      openai: { x: 428, y: 522 },
+      gmail: { x: 338, y: 512 },
+      discord: { x: 508, y: 455 },
+      javascript: { x: 762, y: 462 },
+      chromeapi: { x: 822, y: 288 }
+    };
+
+    var MAP_LINKS = [
+      ['hk', 'tensorflow'], ['hk', 'cvision'], ['hk', 'react'], ['hk', 'flask'], ['hk', 'mysql'],
+      ['ih', 'flask'], ['ih', 'mysql'],
+      ['rf', 'nodejs'], ['rf', 'mysql'],
+      ['fc', 'javascript'],
+      ['bd', 'javascript'], ['bd', 'chromeapi'],
+      ['sd', 'python'], ['sd', 'esp32'], ['sd', 'mqtt'], ['sd', 'cvision'],
+      ['nsort', 'n8n'], ['nsort', 'openai'], ['nsort', 'gmail'], ['nsort', 'discord']
+    ];
+
+    function svgEl(tag, attrs) {
+      var el = document.createElementNS(SVGNS, tag);
+      Object.keys(attrs).forEach(function (key) {
+        el.setAttribute(key, attrs[key]);
+      });
+      return el;
+    }
+
+    function nodeCollisionRadius(node) {
+      if (node.type === 'project') return 34 + node.label.length * 3.2;
+      return 20 + node.label.length * 2.8;
+    }
+
+    function nodeVisualBox(node) {
+      var hw = node.type === 'project' ? node.label.length * 3.8 : node.label.length * 3.2;
+      if (node.type === 'project') {
+        return { l: node.x - hw, r: node.x + hw, t: node.y - 24, b: node.y + 34 };
       }
+      return { l: node.x - hw, r: node.x + hw, t: node.y - 28, b: node.y + 14 };
+    }
 
-      // Render links first (behind nodes)
-      LINKS.forEach(function (pair) {
-        var a = pair[0], b = pair[1];
-        var na = NODES[a], nb = NODES[b];
-        var line = make('line', { x1: na.x, y1: na.y, x2: nb.x, y2: nb.y, 'class': 'c-link' });
-        linksGroup.appendChild(line);
-        linkEls.push({ el: line, a: a, b: b });
-        adj[a].push(b); adj[b].push(a);
+    function fitMapViewBox(svg, nodes) {
+      var pad = 20;
+      var minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+      nodes.forEach(function (node) {
+        var box = nodeVisualBox(node);
+        minX = Math.min(minX, box.l);
+        minY = Math.min(minY, box.t);
+        maxX = Math.max(maxX, box.r);
+        maxY = Math.max(maxY, box.b);
+      });
+      svg.setAttribute('viewBox', [minX - pad, minY - pad, maxX - minX + pad * 2, maxY - minY + pad * 2].join(' '));
+    }
+
+    function layoutGraph() {
+      var nodes = Object.keys(MAP_META).map(function (id) {
+        var meta = MAP_META[id];
+        var pos = MAP_LAYOUT[id];
+        return {
+          id: id, label: meta.label, type: meta.type, jump: meta.jump, note: meta.note,
+          x: pos.x, y: pos.y,
+          r: nodeCollisionRadius({ type: meta.type, label: meta.label })
+        };
+      });
+      var nodeById = {};
+      nodes.forEach(function (n) { nodeById[n.id] = n; });
+
+      PROJECT_IDS.forEach(function (id) {
+        var node = nodeById[id];
+        node.fx = node.x;
+        node.fy = node.y;
       });
 
-      // Render nodes
-      Object.keys(NODES).forEach(function (key) {
-        var n = NODES[key];
-        var g = make('g', { 'class': 'c-node ' + n.type });
-        g.setAttribute('data-key', key);
-        g.setAttribute('data-domains', n.domains);
-        var r = n.type === 'project' ? 7 : 4.5;
-        g.appendChild(make('circle', { cx: n.x, cy: n.y, r: r + 6, 'class': 'ring' }));
-        g.appendChild(make('circle', { cx: n.x, cy: n.y, r: r, 'class': 'dot' }));
-        var label = make('text', {
-          x: n.x, y: n.y - (r + 9),
-          'text-anchor': 'middle'
+      for (var tick = 0; tick < 72; tick++) {
+        for (var i = 0; i < nodes.length; i++) {
+          for (var j = i + 1; j < nodes.length; j++) {
+            var a = nodes[i];
+            var b = nodes[j];
+            var dx = b.x - a.x;
+            var dy = b.y - a.y;
+            var dist = Math.sqrt(dx * dx + dy * dy) || 0.001;
+            var overlap = (a.r + b.r) - dist;
+            if (overlap <= 0) continue;
+            var ux = dx / dist;
+            var uy = dy / dist;
+            if (a.fx != null && b.fx != null) continue;
+            if (a.fx != null) {
+              b.x += ux * overlap;
+              b.y += uy * overlap;
+            } else if (b.fx != null) {
+              a.x -= ux * overlap;
+              a.y -= uy * overlap;
+            } else {
+              a.x -= ux * overlap * 0.5;
+              a.y -= uy * overlap * 0.5;
+              b.x += ux * overlap * 0.5;
+              b.y += uy * overlap * 0.5;
+            }
+          }
+        }
+      }
+
+      PROJECT_IDS.forEach(function (id) {
+        var node = nodeById[id];
+        var pos = MAP_LAYOUT[id];
+        node.x = pos.x;
+        node.y = pos.y;
+        delete node.fx;
+        delete node.fy;
+      });
+
+      return { nodes: nodes };
+    }
+
+    function nodeAnchor(node) {
+      return { x: node.x, y: node.y + (node.type === 'project' ? 2 : 4) };
+    }
+
+    function wavyPath(x1, y1, x2, y2, seed) {
+      var mx = (x1 + x2) / 2;
+      var my = (y1 + y2) / 2;
+      var dx = x2 - x1;
+      var dy = y2 - y1;
+      var len = Math.sqrt(dx * dx + dy * dy) || 1;
+      var nx = -dy / len;
+      var ny = dx / len;
+      var wobble = ((seed % 5) - 2) * 8 + (len > 200 ? 12 : 6);
+      var cx = mx + nx * wobble;
+      var cy = my + ny * wobble;
+      return 'M' + x1 + ',' + y1 + ' Q' + cx + ',' + cy + ' ' + x2 + ',' + y2;
+    }
+
+    function drawSketchMap() {
+      var mapSvg = document.querySelector('.map-svg');
+      var linksGroup = document.getElementById('map-links');
+      var nodesGroup = document.getElementById('map-nodes');
+      if (!mapSvg || !linksGroup || !nodesGroup) return;
+
+      var graph = layoutGraph();
+      var nodes = graph.nodes;
+      fitMapViewBox(mapSvg, nodes);
+
+      var nodeById = {};
+      nodes.forEach(function (n) { nodeById[n.id] = n; });
+
+      MAP_LINKS.forEach(function (pair, i) {
+        var a = nodeById[pair[0]];
+        var b = nodeById[pair[1]];
+        if (!a || !b) return;
+        var pa = nodeAnchor(a);
+        var pb = nodeAnchor(b);
+        var path = svgEl('path', {
+          d: wavyPath(pa.x, pa.y, pb.x, pb.y, i * 7 + pair[0].length),
+          class: 'map-path'
         });
-        label.textContent = n.label;
-        g.appendChild(label);
+        linksGroup.appendChild(path);
+      });
+
+      linksGroup.querySelectorAll('.map-path').forEach(function (path) {
+        var len = path.getTotalLength();
+        path.style.strokeDasharray = len;
+        path.style.strokeDashoffset = len;
+      });
+
+      nodes.forEach(function (node) {
+        var g = svgEl('g', {
+          class: node.type === 'project' ? 'map-node' : 'skill-node',
+          transform: 'translate(' + node.x + ',' + node.y + ')'
+        });
+
+        if (node.type === 'project') {
+          g.setAttribute('tabindex', '0');
+          g.setAttribute('role', 'button');
+          g.appendChild(svgEl('text', { x: 0, y: 0, class: 'proj-star' })).textContent = '☆';
+          g.appendChild(svgEl('text', { x: 0, y: 24, class: 'proj-label' })).textContent = node.label;
+          if (node.note) {
+            g.appendChild(svgEl('text', { x: 14, y: -14, class: 'map-hover-note' })).textContent = '← ' + node.note;
+          }
+          g.addEventListener('click', function () {
+            var target = document.getElementById(node.jump);
+            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          });
+          g.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              var target = document.getElementById(node.jump);
+              if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+          });
+        } else {
+          g.appendChild(svgEl('text', { x: 0, y: -10, class: 'skill-label' })).textContent = node.label;
+          g.appendChild(svgEl('circle', { cx: 0, cy: 4, r: 5, class: 'skill-dot' }));
+        }
+
         nodesGroup.appendChild(g);
-        nodeEls[key] = g;
+      });
+    }
 
-        // hover glow traces connections
-        g.addEventListener('mouseenter', function () { hover(key, true); });
-        g.addEventListener('mouseleave', function () { hover(key, false); });
+    drawSketchMap();
 
-        // clicking a project node jumps to its case study
-        if (n.type === 'project') {
-          g.addEventListener('click', function () { goToCard(key); });
+    /* scroll reveals — unobserve after first paint */
+    if ('IntersectionObserver' in window) {
+      var revealObs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          var el = entry.target;
+          if (el.classList.contains('map-svg')) {
+            el.classList.toggle('map-in-view', entry.isIntersecting);
+            if (entry.isIntersecting) {
+              el.classList.add('is-visible', 'map-drawn');
+            }
+            return;
+          }
+          if (!entry.isIntersecting) return;
+          el.classList.add('is-visible');
+          revealObs.unobserve(el);
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+      document.querySelectorAll('.reveal-title, .margin-note, .reveal-entry, .map-svg').forEach(function (el) {
+        revealObs.observe(el);
+      });
+    } else {
+      document.querySelectorAll('.reveal-title, .margin-note, .reveal-entry, .map-svg').forEach(function (el) {
+        el.classList.add('is-visible');
+        if (el.classList.contains('map-svg')) {
+          el.classList.add('map-drawn', 'map-in-view');
         }
       });
+    }
 
-      function goToCard(key) {
-        var card = document.querySelector('.card[data-key="' + key + '"]');
-        if (!card) return;
-        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        card.classList.remove('focus');
-        void card.offsetWidth; // restart the highlight animation
-        card.classList.add('focus');
-        setTimeout(function () { card.classList.remove('focus'); }, 1600);
-      }
+    /* lightbox */
+    var lightbox = document.getElementById('lightbox');
+    var lightboxImg = document.getElementById('lightbox-img');
+    var lightboxCap = document.getElementById('lightbox-cap');
+    var closeBtn = document.getElementById('close');
 
-      function hover(key, on) {
-        var related = {};
-        related[key] = true;
-        adj[key].forEach(function (k) { related[k] = true; });
-        Object.keys(nodeEls).forEach(function (k) {
-          nodeEls[k].classList.toggle('glow', on && !!related[k]);
-        });
-        linkEls.forEach(function (l) {
-          var touch = (l.a === key || l.b === key);
-          l.el.classList.toggle('glow', on && touch);
-        });
-      }
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      lightbox.setAttribute('aria-hidden', 'true');
+      lightboxImg.src = '';
+    }
 
-      // ---- Filtering (shared by constellation + cards) ----
-      var chips = Array.prototype.slice.call(document.querySelectorAll('.chip, .cluster-head'));
-      var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
-      var resetBtn = document.getElementById('reset-filter');
-      var statusEl = document.getElementById('filter-status');
-      var activeChip = null;
-
-      function tokensOf(str) { return (str || '').trim().split(/\s+/).filter(Boolean); }
-      function matches(domainsStr, wanted) {
-        var have = tokensOf(domainsStr);
-        for (var i = 0; i < wanted.length; i++) {
-          if (have.indexOf(wanted[i]) !== -1) return true;
-        }
-        return false;
-      }
-
-      function clearFilter() {
-        chips.forEach(function (c) { c.classList.remove('active'); });
-        activeChip = null;
-        Object.keys(nodeEls).forEach(function (k) {
-          nodeEls[k].classList.remove('dim', 'match');
-        });
-        linkEls.forEach(function (l) { l.el.classList.remove('dim'); });
-        cards.forEach(function (c) { c.classList.remove('dim'); });
-        statusEl.innerHTML = 'Showing all projects &middot; hover a node to trace its connections';
-      }
-
-      function applyFilter(chip) {
-        var wanted = tokensOf(chip.getAttribute('data-domain'));
-        chips.forEach(function (c) { c.classList.remove('active'); });
-        chip.classList.add('active');
-        activeChip = chip;
-
-        // nodes
-        Object.keys(nodeEls).forEach(function (k) {
-          var el = nodeEls[k];
-          var hit = matches(el.getAttribute('data-domains'), wanted);
-          el.classList.toggle('dim', !hit);
-          el.classList.toggle('match', hit && NODES[k].type === 'project');
-        });
-        // links: keep only if both endpoints survive
-        linkEls.forEach(function (l) {
-          var aHit = matches(NODES[l.a].domains, wanted);
-          var bHit = matches(NODES[l.b].domains, wanted);
-          l.el.classList.toggle('dim', !(aHit && bHit));
-        });
-        // cards
-        var count = 0;
-        cards.forEach(function (c) {
-          var hit = matches(c.getAttribute('data-domains'), wanted);
-          c.classList.toggle('dim', !hit);
-          if (hit) count++;
-        });
-
-        var label = (chip.textContent || '').replace(/^[^A-Za-z]+/, '').trim();
-        statusEl.innerHTML = 'Highlighting <strong>' + label + '</strong> &middot; ' + count + ' project' + (count === 1 ? '' : 's');
-      }
-
-      chips.forEach(function (chip) {
-        chip.addEventListener('click', function () {
-          if (activeChip === chip) { clearFilter(); }
-          else { applyFilter(chip); }
-        });
-      });
-      resetBtn.addEventListener('click', clearFilter);
-
-      // ---- Lightbox (click a thumbnail to view full image) ----
-      var lightbox = document.getElementById('lightbox');
-      var lightboxImg = document.getElementById('lightbox-img');
-      var lightboxCap = document.getElementById('lightbox-cap');
-      var lightboxClose = lightbox.querySelector('.lightbox-close');
-
-      function openLightbox(src, alt, caption) {
-        lightboxImg.setAttribute('src', src);
-        lightboxImg.setAttribute('alt', alt || '');
-        lightboxCap.innerHTML = caption || '';
+    document.querySelectorAll('.taped-photo').forEach(function (thumb) {
+      thumb.addEventListener('click', function () {
+        var img = thumb.querySelector('img');
+        lightboxImg.src = thumb.getAttribute('data-full');
+        lightboxImg.alt = img ? img.alt : '';
+        lightboxCap.textContent = thumb.getAttribute('data-caption') || '';
         lightbox.classList.add('open');
         lightbox.setAttribute('aria-hidden', 'false');
-      }
-      function closeLightbox() {
-        lightbox.classList.remove('open');
-        lightbox.setAttribute('aria-hidden', 'true');
-        lightboxImg.setAttribute('src', '');
-      }
+      });
+    });
 
-      Array.prototype.slice.call(document.querySelectorAll('.thumb')).forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          var img = btn.querySelector('img');
-          openLightbox(btn.getAttribute('data-full'), img ? img.getAttribute('alt') : '', btn.getAttribute('data-caption'));
-        });
-      });
-      lightboxClose.addEventListener('click', closeLightbox);
-      lightbox.addEventListener('click', function (e) {
-        if (e.target === lightbox) closeLightbox();
-      });
-      document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLightbox();
-      });
-    })();
+    closeBtn.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', function (event) {
+      if (event.target === lightbox) closeLightbox();
+    });
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape') closeLightbox();
+    });
   </script>
 </body>
 </html>
