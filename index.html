@@ -414,6 +414,17 @@
         opacity: 0.82;
         transform: rotate(-1deg);
       }
+      .map-wrap .margin-note {
+        position: static;
+        top: auto;
+        right: auto;
+        display: block;
+        margin: 0 0 10px;
+        transform: rotate(6deg);
+      }
+      .map-wrap .margin-note.is-visible {
+        transform: rotate(6deg);
+      }
     }
 
     .about p {
@@ -434,7 +445,9 @@
         radial-gradient(circle at 12% 78%, rgba(154, 171, 148, 0.1), transparent 32%);
     }
 
-    .map-wrap .margin-note { top: 8%; right: 4px; --note-tilt: 6deg; }
+    @media (min-width: 981px) {
+      .map-wrap .margin-note { top: 8%; right: 4px; --note-tilt: 6deg; }
+    }
 
     .map-svg {
       display: block;
@@ -994,10 +1007,10 @@
         <article class="journal-entry reveal-entry" id="nsort">
           <p class="entry-meta">entry #07 · june · summer 2026</p>
           <h3 class="entry-title">AI Email Sorter (n8n)</h3>
-          <p class="entry-note">this is something  i really needed</p>
+          <p class="entry-note">Classifying and organzing the emails</p>
           <p class="journal-line"><span class="lbl">why →</span> My inbox was chaos. Important emails kept getting buried under newsletters and spam.</p>
           <p class="journal-line"><span class="lbl">problem →</span> Manual searching and sorting every time was eating my time</p>
-          <p class="journal-line"><span class="lbl">solution →</span> Classifying and organzing the emails somehow</p>
+          <p class="journal-line"><span class="lbl">solution →</span> Classifying and organzing the emails.</p>
           <p class="journal-line"><span class="lbl">build →</span> n8n workflow that reads Gmail, classifies with OpenAI, forwards to categorized Discord channels.</p>
           <p class="journal-line"><span class="lbl">learned →</span> Automation through n8n - triggers, API keys and flows</p>
           
