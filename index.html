@@ -16,7 +16,7 @@
       --graphite: #4a443c;
       --soft-ink: #6d6358;
       --rose: #c49a9f;
-      --rose-fade: rgba(196, 154, 159, 0.45);
+      --rose-fade: rgba(198, 128, 142, 0.68);
       --sage: #9aab94;
       --sage-fade: rgba(154, 171, 148, 0.4);
       --navy: #6b7289;
@@ -700,8 +700,10 @@
       max-width: 100%;
     }
 
-    #fc .entry-note {
-      right: 72px;
+    @media (min-width: 981px) {
+      #fc .entry-note {
+        right: 72px;
+      }
     }
 
     #fc:has(.photo-cluster--right) .journal-line,
@@ -899,6 +901,11 @@
       #fc:has(.photo-cluster--right) .entry-link {
         max-width: none;
       }
+      #fc .entry-note {
+        right: auto;
+        transform: none;
+        margin: 0 0 10px;
+      }
     }
 
     @media (max-width: 520px) {
@@ -990,7 +997,7 @@
           <p class="entry-note">this is something  i really needed</p>
           <p class="journal-line"><span class="lbl">why →</span> My inbox was chaos. Important emails kept getting buried under newsletters and spam.</p>
           <p class="journal-line"><span class="lbl">problem →</span> Manual searching and sorting every time was eating my time</p>
-          <p class="journal-line"><span class="lbl">solution →</span> Classifying and organzing the emails with somehow</p>
+          <p class="journal-line"><span class="lbl">solution →</span> Classifying and organzing the emails somehow</p>
           <p class="journal-line"><span class="lbl">build →</span> n8n workflow that reads Gmail, classifies with OpenAI, forwards to categorized Discord channels.</p>
           <p class="journal-line"><span class="lbl">learned →</span> Automation through n8n - triggers, API keys and flows</p>
           
@@ -1010,7 +1017,7 @@
           
           <div class="photo-cluster">
             <figure>
-              <button class="taped-photo" style="--photo-tilt:-3deg" data-full="assets/email-sorter-workflow.png" data-caption="the workflow — took 3 tries to get routing right">
+              <button class="taped-photo" style="--photo-tilt:-3deg" data-full="assets/email-sorter-workflow.png" data-caption="the workflow published on n8n">
                 <img src="assets/email-sorter-workflow.png" alt="n8n workflow" loading="lazy" decoding="async">
               </button>
               <figcaption class="photo-cap">workflow (screenshot)</figcaption>
@@ -1107,13 +1114,12 @@
           <p class="journal-line"><span class="lbl">EDA →</span> Built EDA views in python and then used them to build a dashboard in flask.</p>
           
           <div class="tech-scribble"><span>Flask</span><span>MySQL</span><span>EDA</span><span>charts</span></div>
-          <img class="entry-sticker entry-sticker--left" src="assets/doodles/star.png" alt="" aria-hidden="true" loading="lazy" decoding="async">
         </article>
 
         <article class="journal-entry reveal-entry" id="fc">
           <p class="entry-meta">entry #01 · semester 1 · fall 2024</p>
           <h3 class="entry-title">FAST Cafe Website</h3>
-          <p class="entry-note">learned responsive layout here</p>
+          <p class="entry-note">learnt responsive layout here</p>
           <div class="photo-cluster photo-cluster--right">
             <figure>
               <button class="taped-photo" style="--photo-tilt:1.5deg" data-full="assets/fast-cafe.png" data-caption="menu UI — simple but it worked">
